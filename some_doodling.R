@@ -8,6 +8,8 @@ square_mapping = interp(x = original_mapping$x, y = original_mapping$y, z = orig
                         yo = seq(1,max(original_mapping$y),length.out = 50))
 square_mapping$x = seq(50); square_mapping$y = seq(50)
 
+prior_field = expand.grid(seq(10), seq(10))
+
 prior ranges; prior variance; prior field; numeric approximation integrat;
 exponential covariance func; matern?; squared exp?; different polynomial trends?;
 

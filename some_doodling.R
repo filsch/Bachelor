@@ -1,12 +1,14 @@
 library(geoR); library(MASS); library(akima); library(fields); library(RSAGA)
-#Adapting data from matrix form, to original + square 50x50
+set.seed(4545)
+#Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
 
-#Constructing square mapping with adapted axes.
+#Constructing square mapping with adapted axes to a 50x50 
+#square_mapping = expand.grid(x = seq(1, 50), y= seq(1,50))
 square_mapping = interp(x = original_mapping$x, y = original_mapping$y, z = original_mapping$z,
                         xo = seq(1,max(original_mapping$x),length.out = 50),
                         yo = seq(1,max(original_mapping$y),length.out = 50))
-square_mapping$x = seq(50); square_mapping$y = seq(50)
+square_mapping$x = seq(0,50); square_mapping$y = seq(0,50)
 
 #Constructing isotropic correlation matrix. Now using Exponential
 corr_matrix <- function(pred_points, sample_points, range){
@@ -20,7 +22,32 @@ corr_matrix <- function(pred_points, sample_points, range){
   return( Exponential(corr_matrix, range = range) )
 }
 
+#Generating sample from grid by design
+#Regular, 64 samples
+grid_samples = expand.grid(x = seq(0, 50, 8), y= seq(0,50,8))
+grid_samples$z = square_mapping$z[matrix(cbind(grid_samples$x, grid_samples$y), nrow=49,ncol=2)]
+
+#Assigning prior values and estimating beta
 prior_field = expand.grid(seq(10), seq(10))
+alpha = 5; beta = 0.5;
+sigma2 = rgamma(1,alpha,beta); range = 1 + runif(1)*9
+# beta = glm(grid_samples$z ~ grid_samples$x*grid_samples$y + I(grid_samples$x*grid_samples$x) + I(grid_samples$y*grid_samples$y))
+
+#Computing the predictor:
+prediction_grid = expand.grid(seq(50),seq(50))
+posterior_kriger = krige.conv(coords=cbind(grid_samples$x,grid_samples$y), data=grid_samples$z, locations = prediction_grid,
+                              krige=krige.control(type.krige= "OK", trend.d = "2nd", trend.l = "2nd", cov.model="exponential", cov.pars=c(sigma2, range)));
+#Plotting some results
+plot_values = list(z=matrix(posterior_kriger$predict,nrow=50,ncol=50,byrow=FALSE), x = seq(0,50), y = seq(0,50))
+image.plot(plot_values, main="Kriging predictions, no noise on data Y", zlim=c(80,200))
+
+plot_values$z = matrix(sqrt(posterior_kriger$krige.var),nrow=50,ncol=50,byrow=FALSE) 
+image.plot(plot_values, main="Kriging std.dev., no noise on data Y", zlim=c(0,5))
+
+plot_values$z = square_mapping$z - matrix(posterior_kriger$predict,nrow=50,ncol=50,byrow=FALSE) 
+
+image.plot(plot_values, main="Kriging differences", zlim=c(-30, 30))
+
 
 #prior ranges; prior variance; prior field; numeric approximation integrat;
 #exponential covariance func; matern?; squared exp?; different polynomial trends?;

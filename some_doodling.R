@@ -28,15 +28,16 @@ grid_samples = expand.grid(x = seq(1, 50, 8), y= seq(1,50,8))
 grid_samples$z = square_mapping$z[matrix(cbind(grid_samples$x, grid_samples$y), nrow=49,ncol=2)]
 
 #Assigning prior values and estimating beta
-prior_field = expand.grid(seq(10), seq(10))
 alpha = 5; beta = 0.5;
-for (i in 1:10){
-  for (j in 1:10){
-    prior_field[i,j] = 
-  }
-}
+#"Uniform"
+prior_field = expand.grid(sigma2=qgamma(0.09*seq(1:10),alpha,beta), range = seq(1,10))
+prior_field$prob = numeric(100) + 0.01
+#Centre mean, 0.4*std indrement out from centre
+values = seq(-5,4)*0.4*sqrt(alpha)/beta + alpha/beta
+lower = c(0, values[2:length(values)] - 0.2*sqrt(alpha)/beta); upper = c(values[1:length(values)-1]  + 0.2*sqrt(alpha)/beta,Inf)
+prior_field = expand.grid(sigma2=values, range = seq(1,10))
+prior_field$prob = rep(0.1*(pgamma(upper, alpha,beta) - pgamma(lower,alpha,beta)), times = 10)
 
-sigma2 = rgamma(1,alpha,beta); range = 1 + runif(1)*9
 # GLM must be done manually, to account for covariance (How to in GLM?) 
 # beta = glm(grid_samples$z ~ grid_samples$x*grid_samples$y + I(grid_samples$x*grid_samples$x) + I(grid_samples$y*grid_samples$y))
 

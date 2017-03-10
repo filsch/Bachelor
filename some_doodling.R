@@ -1,11 +1,13 @@
+#Source auxilliary functions
+source('~/Documents/Bachelor/myglm_lite.R')
 set.seed(4545)
 
 #TODO:
 # - Lage flere funksjoner for oversiktlighet
-# - Gjennomsøke myglm_lite
-# - Begynne å notere i latex
+# - Gjennoms??ke myglm_lite
+# - Begynne ?? notere i latex
 # - Koble prior med prediksjonen
-# - Undersøke hvorfor 'linear' og 'quadratic' gir tilsynelatende motsatt resultater
+# - Unders??ke hvorfor 'linear' og 'quadratic' gir tilsynelatende motsatt resultater
 
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
@@ -21,7 +23,7 @@ prior = priorField(10,10)
 #--------------------------------------------------------------------------------------------------------
 
 #Generating sample from grid by design
-samples = gridSampler(10, map,"regular", noise = 0.1)
+samples = gridSampler(50, map,"regular", noise = 0.1)
 
 #--------------------------------------------------------------------------------------------------------
 # Fitting trend w.r.t. covariance matrix and sample position
@@ -34,8 +36,9 @@ glm_object = glmLite('quadratic', samples,
 #--------------------------------------------------------------------------------------------------------
 
 #Predicting the data with glm estimates of trend
-posterior_distribution = posteriorDistribution(50,50,glm_est=glm_object)
-image.plot(posterior_distribution)
+posterior_distribution = posteriorDistribution(50, 50, glm_est=glm_object)
+image.plot(posterior_distribution$prediction)
+image.plot(posterior_distribution$variance)
 
 #--------------------------------------------------------------------------------------------------------
 sigma2=1

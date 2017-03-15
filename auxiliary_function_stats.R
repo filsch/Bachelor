@@ -1,4 +1,4 @@
-#Auxilliary functions for bachelor-thesis
+#Auxilliary functions for bachelor-thesis, relevant for stats
 library(fields); library(akima); library(geoR); library(MASS); library(spatial); library(RSAGA)
 
 #Constructing square map with adapted axes 
@@ -39,7 +39,7 @@ gridSampler <- function(n, map, design, noise = 0){
     xincrement = round( (xmax - xmin)/(round(sqrt(n)) - 1) )
     yincrement = round( (ymax - ymin)/(round(sqrt(n)) - 1) )
     
-    samples = expand.grid(x = seq(xmin, xmax, xincrement), y = seq(ymin, ymax, yincrement))
+    samples = expand.grid(y = seq(xmin, xmax, xincrement), x = seq(ymin, ymax, yincrement))
     samples$z = map$z[(samples$x-1)*xmax + samples$y]
   } 
   else if (design == 'random'){

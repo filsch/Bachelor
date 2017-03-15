@@ -9,11 +9,12 @@ set.seed(4545)
 # - Koble prior med prediksjonen
 # - Unders??ke hvorfor 'linear' og 'quadratic' gir tilsynelatende motsatt resultater
 
+par(mfrow=c(2,2))
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
 image.plot(original_mapping)
 
-map = squareMap(original_mapping, 50)
+map = squareMap(original_mapping, 100)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -23,8 +24,8 @@ prior = priorField(10,10)
 #--------------------------------------------------------------------------------------------------------
 
 #Generating sample from grid by design
-samples = gridSampler(50, map,"regular", noise = 0.1)
-
+samples = gridSampler(162, map,"regular", noise = 0.1)
+image.plot(samples)
 #--------------------------------------------------------------------------------------------------------
 # Fitting trend w.r.t. covariance matrix and sample position
 correlation_sample = cbind(samples$x,samples$y)
@@ -37,8 +38,10 @@ glm_object = glmLite('quadratic', samples,
 
 #Predicting the data with glm estimates of trend
 posterior_distribution = posteriorDistribution(50, 50, glm_est=glm_object)
+image.plot(map)
 image.plot(posterior_distribution$prediction)
 image.plot(posterior_distribution$variance)
+par(mfrow=c(1,1))
 
 #--------------------------------------------------------------------------------------------------------
 sigma2=1

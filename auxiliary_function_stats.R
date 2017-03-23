@@ -61,18 +61,20 @@ glmLite <- function(trend, data, correlation_matrix, sigma2 = 1){
 #----------------------------------------------------------------------------------------
 
 #Constructs posterior distribution
-posteriorDistribution <- function(size_predictionx, size_predictiony, samples, correlation_function = 'exponential', glm_est, GRFsigma2 = 1){
+posteriorDistribution <- function(size_predictionx, size_predictiony, samples, correlation_function = 'exponential', glm_object, GRFsigma2 = 1){
   
   prediction_grid = expand.grid(x = seq(1,size_predictiony), y = seq(1,size_predictionx));
   prediction_grid$z = numeric(size_predictionx*size_predictiony)
   
-  mf = model.frame(formula = glm_est$formula, data = prediction_grid)
-  Xprediction  = model.matrix(attr(mf, "terms"), data = mf)
-  Xobserved = glm_est$X
+  mf = model.frame(formula = glm_object$formula, data = prediction_grid)
+  Xpred  = model.matrix(attr(mf, "terms"), data = mf)
+  Xobs = glm_object$X
   
   prediction_grid$z <- NULL
   prediction_pos = cbind(prediction_grid$x, prediction_grid$y)
+  
   sampling_pos = cbind(samples$x,samples$y)
+  sampling_noise = samples$noise
   
   correlation_prediction_observed = correlationMatrix(sampling_pos, prediction_pos, range = 5, correlation_function);
   
@@ -80,22 +82,27 @@ posteriorDistribution <- function(size_predictionx, size_predictiony, samples, c
   
   correlation_observed = correlationMatrix(sampling_pos, sampling_pos, range = 5, correlation_function);
   
-  fitted_predictions = Xprediction%*%glm_est$coefficients;
-  covariance_predictions_observed = Xprediction%*%glm_est$covar%*%t(Xobserved);
+  fitted_predictions = Xpred%*%glm_object$coefficients;
   
-  #Constructing the different parts of the variance matrix of the multivariate normal
-  sigma12 = correlation_prediction_observed * GRFsigma2 + covariance_predictions_observed
-  sigma22 = correlation_observed * GRFsigma2;
-  sigma11 = correlation_prediction * GRFsigma2;
-  sigma12sigma22 = sigma12%*%solve(sigma22)
+  XpBETAtXo = Xpred%*%glm_object$covar%*%t(Xobs);
+  XpBETAtXp = Xpred%*%glm_object$covar%*%t(Xpred);
+  XoBETAtXo = Xobs%*%glm_object$covar%*%t(Xobs);
+  
+  
+  #Constructing the different parts of the variance matrix of the conditional multivariate normal
+  sigma12 = XpBETAtXo + correlation_prediction_observed * GRFsigma2
+  sigma22 = XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise*diag(length(samples$x));
+  sigma11 = XpBETAtXp + correlation_prediction * GRFsigma2;
+  sigma22inv = solve(sigma22)
+  sigma12sigma22 = sigma12%*%sigma22inv
   
   #Fitting predictions and variance 
   variance = prediction_grid
-  prediction_grid$z = fitted_predictions + sigma12sigma22%*%(samples$z - Xobserved%*%glm_object$coefficients)
-  variance$z = diag( sigma11 + sigma12sigma22%*%(t(sigma12)) )
+  prediction_grid$z = fitted_predictions + sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
+  variance$z = diag( sigma11 - sigma12sigma22%*%(t(sigma12)) )
   
   fit = prediction_grid; fit$z = fitted_predictions
-  beforeFit = prediction_grid; beforeFit$z = sigma12sigma22%*%(samples$z - Xobserved%*%glm_object$coefficients)
+  beforeFit = prediction_grid; beforeFit$z = sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
   
   othervariance = variance
   variance = xyz.to.grid(variance)

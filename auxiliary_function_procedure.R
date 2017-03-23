@@ -46,7 +46,7 @@ constructDistanceMatrix <- function(sample_points, prediction_points){
 
 #Samples n samples with position from the grid
 #(To check the values: z[ intersect(which(square_map$y==a),which(square_map$x==b))) ]
-gridSampler <- function(n, map, design, noise = 0){
+gridSampler <- function(n = 1, nx = 0, ny = 0, map, design, noise = 0){
   xmax = dim(map)[1]; xmin = 1; ymax = dim(map)[2]; ymin = 1;
   #xmax = max(map$x);   ymax = max(map$y);   xmin = min(map$x);   ymin = min(map$y)
   if (xmin == 0){
@@ -57,12 +57,16 @@ gridSampler <- function(n, map, design, noise = 0){
   }
   
   if (design == 'regular'){
-    #Designed to have a perfect regular grid, disregarding the actual n
-    xincrement = round( (xmax - xmin)/(round(sqrt(n)) - 1) )
-    yincrement = round( (ymax - ymin)/(round(sqrt(n)) - 1) )
+    dim = round(sqrt(n))
+
+    #Designed to have a perfect regular grid, closest to the actual n
+    increment = floor( (xmax - xmin)/dim)
     
-    samples = expand.grid(x = seq(xmin, xmax, xincrement), y = seq(ymin, ymax, yincrement))
-    points = cbind(x = c(samples$x), y = c(samples$y))
+    samples = expand.grid(x = seq(xmin, xmax - increment, increment),
+                          y = seq(ymin, ymax - increment, increment))
+    samples$x = samples$x + ceiling(increment/2)
+    samples$y = samples$y + ceiling(increment/2)
+    points = cbind(samples$x, samples$y)
     samples$z = map[points]
   } 
   else if (design == 'random'){
@@ -72,11 +76,9 @@ gridSampler <- function(n, map, design, noise = 0){
     samples = list(x = x, y = y, z = map[points])
   }
   
-  samples$z = samples$z + rnorm(length(samples$z),0, noise)    
+  samples$z = samples$z + rnorm(length(samples$z),0, noise)
+  samples$noise = noise
   return(samples)
 }
 
 #----------------------------------------------------------------------------------------
-#Reshapes the points if needed for plotting
-reshapePoints <- function(list_points, size_to_x, size_to_y){
-}

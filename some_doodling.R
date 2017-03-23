@@ -10,13 +10,12 @@ set.seed(4545)
 # - Finne ut hvordan behandle matrisedimensjoner. Kan alle arve av alle?
 # - Legge inn default verdier for stoerrelse. Burde ikke reshape flere ganger. Stick to the size
 
-par(mfrow=c(3,1))
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
-image.plot(original_mapping)
 
+n = 50
 #Constructs map as a matrix
-map = constructSquareMap(original_mapping, 50)
+map = constructSquareMap(original_mapping, n)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -26,27 +25,27 @@ prior = priorField(10,10)
 #--------------------------------------------------------------------------------------------------------
 
 #Generating sample from grid by design
-samples = gridSampler(50, map,"regular", noise = 1)
+samples = gridSampler(n = 50, map=map,design="regular", noise = 1)
 #--------------------------------------------------------------------------------------------------------
 
 # Fitting trend w.r.t. covariance matrix and sample position
 correlation_sample = cbind(samples$x,samples$y)
+correlation_matrix = correlationMatrix(correlation_sample, correlation_sample,
+                                       range = 5, correlation_function = 'exponential')
 
-glm_object = glmLite('quadratic', samples,
-                     correlationMatrix(correlation_sample, correlation_sample,
-                                       range = 5, correlation_function = 'exponential'))
+glm_object = glmLite('quadratic', samples, correlation_matrix)
 
 #--------------------------------------------------------------------------------------------------------
 
 #Predicting the data with glm estimates of trend
-posterior_distribution = posteriorDistribution(50, 50, samples = samples, glm_est=glm_object)
+image.plot(original_mapping)
+posterior_distribution = posteriorDistribution(size_predictiony = n, size_predictionx = n, samples = samples, glm_object = glm_object)
 image.plot(posterior_distribution$fit)
 image.plot(posterior_distribution$beforeFit)
-#image.plot(posterior_distribution$prediction)
+image.plot(posterior_distribution$prediction)
 image.plot(posterior_distribution$variance)
 image.plot(posterior_distribution$othervariance)
 plot(samples$x,samples$y, main="Observed points")
-par(mfrow=c(1,1))
 
 #--------------------------------------------------------------------------------------------------------
 

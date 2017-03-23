@@ -1,20 +1,22 @@
 #Source auxilliary functions
-source('~/Documents/Bachelor/myglm_lite.R')
+source('~/Documents/Bachelor/auxiliary_function_procedure.R')
+source('~/Documents/Bachelor/auxiliary_function_stats.R')
 set.seed(4545)
 
 #TODO:
 # - Lage flere funksjoner for oversiktlighet
-# - Gjennoms??ke myglm_lite
+# - Varians prediksjon er feil -> GLM + Ikke brukt sigma i GLM
 # - Begynne ?? notere i latex
-# - Koble prior med prediksjonen
-# - Unders??ke hvorfor 'linear' og 'quadratic' gir tilsynelatende motsatt resultater
+# - Finne ut hvordan behandle matrisedimensjoner. Kan alle arve av alle?
+# - Legge inn default verdier for stoerrelse. Burde ikke reshape flere ganger. Stick to the size
 
-par(mfrow=c(2,2))
+par(mfrow=c(3,1))
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
 image.plot(original_mapping)
 
-map = squareMap(original_mapping, 100)
+#Constructs map as a matrix
+map = constructSquareMap(original_mapping, 50)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -24,9 +26,9 @@ prior = priorField(10,10)
 #--------------------------------------------------------------------------------------------------------
 
 #Generating sample from grid by design
-samples = gridSampler(162, map,"regular", noise = 0.1)
-image.plot(samples)
+samples = gridSampler(50, map,"regular", noise = 1)
 #--------------------------------------------------------------------------------------------------------
+
 # Fitting trend w.r.t. covariance matrix and sample position
 correlation_sample = cbind(samples$x,samples$y)
 
@@ -37,13 +39,17 @@ glm_object = glmLite('quadratic', samples,
 #--------------------------------------------------------------------------------------------------------
 
 #Predicting the data with glm estimates of trend
-posterior_distribution = posteriorDistribution(50, 50, glm_est=glm_object)
-image.plot(map)
-image.plot(posterior_distribution$prediction)
+posterior_distribution = posteriorDistribution(50, 50, samples = samples, glm_est=glm_object)
+image.plot(posterior_distribution$fit)
+image.plot(posterior_distribution$beforeFit)
+#image.plot(posterior_distribution$prediction)
 image.plot(posterior_distribution$variance)
+image.plot(posterior_distribution$othervariance)
+plot(samples$x,samples$y, main="Observed points")
 par(mfrow=c(1,1))
 
 #--------------------------------------------------------------------------------------------------------
+
 sigma2=1
 prediction_grid$z <- NULL
 prediction_grid = expand.grid(x = seq(1,50), y = seq(1,50))

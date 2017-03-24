@@ -3,12 +3,22 @@
 #----------------------------------------------------------------------------------------
 
 #Constructing square map with adapted axes as a matrix
-constructSquareMap <- function(map, grid_size){
-  square_map = interp(x = map$x, y = map$y, z = map$z,
-                      xo = seq(1,max(map$x),length.out = grid_size + 2)[2:(grid_size + 1)],
-                      yo = seq(1,max(map$y),length.out = grid_size + 2)[2:(grid_size + 1)])$z
+reshapeMap <- function(map, grid_size = 0, type){
+  if (type == 'square'){
+    grid_x = grid_size
+    grid_y = grid_size
+    
+  } else if (type == 'reduced'){
+    dimx = max(map$x); dimy = max(map$y)
+    proportion = dimx/(dimy + dimx)
+    grid_x = round(grid_size*proportion)
+    grid_y = grid_size - grid_x
+  }
+  map = interp(x = map$x, y = map$y, z = map$z,
+               xo = seq(1,max(map$x),length.out = grid_x + 2)[2:(grid_x + 1)],
+               yo = seq(1,max(map$y),length.out = grid_y + 2)[2:(grid_y + 1)])$z
   #square_map = apply(square_map,1,rev)
-  return(square_map)
+  return(map)
 }
 
 #----------------------------------------------------------------------------------------
@@ -21,6 +31,7 @@ xyz.to.grid <- function(map){
   sorted_mapy = sort(unique(map$y))
   for (i in 1:nrows){
     for (j in 1:ncolumns){
+      #cat('(',i,',',j,')\n')
       grid[i,j] = map$z[intersect(which(map$x == sorted_mapx[i]), which(map$y == sorted_mapy[j]))]
     }
   }

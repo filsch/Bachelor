@@ -10,8 +10,8 @@ set.seed(4545)
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
 
-n = 100; #smoothness of mapping and prediction.
-n_samples = ; #how many samples to take
+n = 50; #smoothness of mapping and prediction.
+n_samples = 16; #how many samples to take
 size_range = 10 #size of range discretization
 size_sigma = 10 #size of sigma2 discretization
 sampling_noise = 1; #sd of data collecting (on Z(s))
@@ -19,7 +19,7 @@ trend = 'quadratic' #What trend to use for the regression of GRF
 
 
 #Constructs map as a matrix
-map = constructSquareMap(original_mapping, n)
+map = reshapeMap(map=original_mapping, grid_size = n, type="square")
 
 #--------------------------------------------------------------------------------------------------------
 

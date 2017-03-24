@@ -30,9 +30,9 @@ priorField <- function(size_sigma, size_range, alpha=5, beta=0.5){
 #----------------------------------------------------------------------------------------
 
 #Performs GLS estimation of the samples
-glmLite <- function(trend, data, correlation_matrix, sigma2 = 1){
+glmLite <- function(trend, onlyFormula = FALSE, data, correlation_matrix){
   if (trend == 'cubic'){
-    formula = z ~ x*y + I(x^2) + I(y^2) + I(y^3) + I(y^3)
+    formula = z ~ x*y + I(x^2) + I(y^2) + I(x^3) + I(y^3)
   }
   else if (trend == 'quadratic'){
     formula = z ~ x*y + I(x^2) + I(y^2)
@@ -44,43 +44,32 @@ glmLite <- function(trend, data, correlation_matrix, sigma2 = 1){
     formula = z ~ 1
   }
   else {cat('Choose either simple, linear or quadratic trend','\n'); return()}
+  if (onlyFormula == TRUE){
+    return(formula)
+  }
   mf = model.frame(formula = formula, data = data);
   X  = model.matrix(attr(mf, "terms"), data = mf);
   Y  = model.response(mf);
   
   #Performing GLS 
-  W = solve(correlation_matrix*sigma2);
+  W = solve(correlation_matrix);
   covariance = solve(t(X)%*%W%*%X);
-  beta = covariance%*%t(X)%*%W%*%Y;
+  beta = covariance%*%t(X)%*%W%*%Y; 
   return(list(coefficients = beta, covar = covariance, formula = formula, X = X, terms = attr(mf, "terms")))
 }
 
 #----------------------------------------------------------------------------------------
 
 #Constructs posterior distribution
-posteriorDistribution <- function(size_predictionx, size_predictiony, samples, correlation_function = 'exponential', glm_object, GRFsigma2 = 1){
+posteriorDistribution <- function(correlation_function = 'exponential', glm_object, GRFsigma2 = 1,
+                                  sampling_noise, dist_smpl_pred, dist_pred_pred, dist_smpl_smpl,
+                                  Xobs, Xpred){
   
-  prediction_grid = expand.grid(x = seq(1,size_predictiony), y = seq(1,size_predictionx));
-  prediction_grid$z = numeric(size_predictionx*size_predictiony)
+  correlation_prediction_observed = correlationMatrix(dist_smpl_pred, range = range, correlation_function);
   
-  mf = model.frame(formula = glm_object$formula, data = prediction_grid)
-  Xpred  = model.matrix(attr(mf, "terms"), data = mf)
-  Xobs = glm_object$X
+  correlation_prediction = correlationMatrix(dist_pred_pred, range = range, correlation_function);
   
-  prediction_grid$z <- NULL
-  prediction_pos = cbind(prediction_grid$x, prediction_grid$y)
-  
-  sampling_pos = cbind(samples$x,samples$y)
-  sampling_noise = samples$noise
-  
-  distances = constructDistanceMatrix(sampling_pos,prediction_pos)
-  correlation_prediction_observed = correlationMatrix(distances, range = 5, correlation_function);
-  
-  distances = constructDistanceMatrix(prediction_pos,prediction_pos)
-  correlation_prediction = correlationMatrix(distances, range = 5, correlation_function);
-  
-  distances = constructDistanceMatrix(sampling_pos,sampling_pos)
-  correlation_observed = correlationMatrix(distances, range = 5, correlation_function);
+  correlation_observed = correlationMatrix(dist_smpl_smpl, range = range, correlation_function);
   
   fitted_predictions = Xpred%*%glm_object$coefficients;
   
@@ -91,23 +80,24 @@ posteriorDistribution <- function(size_predictionx, size_predictiony, samples, c
   
   #Constructing the different parts of the variance matrix of the conditional multivariate normal
   sigma12 = XpBETAtXo + correlation_prediction_observed * GRFsigma2
-  sigma22 = XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise*diag(length(samples$x));
+  sigma22 = XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise*diag(dim(XoBETAtXo)[1]);
   sigma11 = XpBETAtXp + correlation_prediction * GRFsigma2;
   sigma22inv = solve(sigma22)
   sigma12sigma22 = sigma12%*%sigma22inv
   
   #Fitting predictions and variance 
-  variance = prediction_grid
-  prediction_grid$z = fitted_predictions + sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
-  variance$z = diag( sigma11 - sigma12sigma22%*%(t(sigma12)) )
+  #variance = prediction_grid
+  prediction = fitted_predictions + sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
+  variance = diag( sigma11 - sigma12sigma22%*%(t(sigma12)) )
   
   #fit = prediction_grid; fit$z = fitted_predictions
   #beforeFit = prediction_grid; beforeFit$z = sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
   
-  variance = xyz.to.grid(variance)
-  prediction = xyz.to.grid(prediction_grid)
+  #Saving as matrix for "tighter" plot
+  #variance = xyz.to.grid(variance)
+  #prediction_grid = xyz.to.grid(prediction_grid)
   #fit = xyz.to.grid(fit)
   #beforeFit = xyz.to.grid(beforeFit)
   
-  return(list(prediction_grid = prediction, variance = variance))#, fit = fit, beforeFit = beforeFit))
+  return(list(prediction = prediction, variance = variance))#, fit = fit, beforeFit = beforeFit))
 }

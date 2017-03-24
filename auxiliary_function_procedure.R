@@ -16,7 +16,7 @@ constructSquareMap <- function(map, grid_size){
 xyz.to.grid <- function(map){
   nrows = max(map$x)
   ncolumns = max(map$y)
-  grid = matrix(numeric(nrows*ncolumns), nrow = nrows, ncol = ncolumns)
+  grid = matrix(numeric(nrows*ncolumns), ncol = ncolumns, nrow = nrows)
   sorted_mapx = sort(unique(map$x))
   sorted_mapy = sort(unique(map$y))
   for (i in 1:nrows){
@@ -60,12 +60,14 @@ gridSampler <- function(n = 1, nx = 0, ny = 0, map, design, noise = 0){
     dim = round(sqrt(n))
 
     #Designed to have a perfect regular grid, closest to the actual n
-    increment = floor( (xmax - xmin)/dim)
-    
+    increment = round( (xmax - xmin)/(dim + 1))
+
     samples = expand.grid(x = seq(xmin, xmax - increment, increment),
                           y = seq(ymin, ymax - increment, increment))
-    samples$x = samples$x + ceiling(increment/2)
-    samples$y = samples$y + ceiling(increment/2)
+    shift = round((min(samples$x) - xmin + xmax - max(samples$x))/2)
+    cat(shift, '\n')
+    samples$x = samples$x + shift
+    samples$y = samples$y + shift
     points = cbind(samples$x, samples$y)
     samples$z = map[points]
   } 

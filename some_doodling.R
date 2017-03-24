@@ -20,31 +20,57 @@ map = constructSquareMap(original_mapping, n)
 #--------------------------------------------------------------------------------------------------------
 
 #Constructing priorfield
-prior = priorField(10,10) 
+size_range = 10
+size_sigma = 10
+prior = priorField(size_sigma = size_sigma, size_range = size_range) 
 
-#--------------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------------
 
 #Generating sample from grid by design
-samples = gridSampler(n = 50, map=map,design="regular", noise = 1)
+samples = gridSampler(n = 50, map=map, design="regular", noise = 1)
 #--------------------------------------------------------------------------------------------------------
 
 # Fitting trend w.r.t. covariance matrix and sample position
 correlation_sample = cbind(samples$x,samples$y)
-correlation_matrix = correlationMatrix(correlation_sample, correlation_sample,
-                                       range = 5, correlation_function = 'exponential')
 
-glm_object = glmLite('quadratic', samples, correlation_matrix)
+#Constructing distance matrix that is only dependent on samples
+distance_matrix = constructDistanceMatrix(correlation_sample,correlation_sample)
 
-#--------------------------------------------------------------------------------------------------------
+#Extracting unique range and sigma2 for easy iterations
+prior_range = unique(prior$range)
+prior_sigma2 = unique(prior$sigma2)
 
-#Predicting the data with glm estimates of trend
-image.plot(original_mapping)
-posterior_distribution = posteriorDistribution(size_predictiony = n, size_predictionx = n, samples = samples, glm_object = glm_object)
-image.plot(posterior_distribution$fit)
-image.plot(posterior_distribution$beforeFit)
-image.plot(posterior_distribution$prediction)
+#Initializing posterior_distribution with empty data
+posterior_distribution = list(prediction = matrix(numeric(n*n),nrow=n,ncol=n),
+                              variance = matrix(numeric(n*n),nrow=n,ncol=n))
+
+#Numerically integration over the prior domain
+for (range in prior_range){
+  #New correlation_matrix for each range
+  correlation_matrix = correlationMatrix(corr_matrix=distance_matrix, range = range, correlation_function = "exponential")
+
+  for (sigma2 in prior_sigma2){
+    #Obtaining joint probability for this particular (sigma2, range)
+    cat('Iteration for prior pair: (',sigma2,',',range,') \n')
+    probability = prior$prob[intersect(which(prior$sigma2 == sigma2), which(prior$range == range))]
+    
+    #Obtaining GLS fit with updated correlation_matrix
+    glm_object = glmLite('quadratic', samples, correlation_matrix, sigma2 = sigma2)
+    
+    #Predicting the data with glm estimates of trend
+    temp_posterior = posteriorDistribution(size_predictionx = n, size_predictiony = n, samples = samples, glm_object = glm_object, GRFsigma2 = sigma2)
+    
+    posterior_distribution$prediction = posterior_distribution$prediction + temp_posterior$prediction*probability
+    posterior_distribution$variance = posterior_distribution$variance + temp_posterior$variance*probability
+  }
+}
+image.plot(xyz.to.grid(original_mapping), zlim=c(50,200))
+#image.plot(posterior_distribution$fit)
+#image.plot(posterior_distribution$beforeFit)
+par(mfrow=c(1,2))
+image.plot(posterior_distribution$prediction,zlim=c(50,200))
 image.plot(posterior_distribution$variance)
-image.plot(posterior_distribution$othervariance)
+par(mfrow=c(1,1))
 plot(samples$x,samples$y, main="Observed points")
 
 #--------------------------------------------------------------------------------------------------------

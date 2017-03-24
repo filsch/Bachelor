@@ -4,10 +4,7 @@ library(fields); library(akima); library(geoR); library(MASS); library(spatial);
 #----------------------------------------------------------------------------------------
 
 #Constructs an isotropic correlation matrix based on the Exponential and Matern correlation function 
-correlationMatrix <- function(sample_points, prediction_points, range, correlation_function = 0, v=1.5){
-  
-  corr_matrix = constructDistanceMatrix(sample_points, prediction_points)
-  
+correlationMatrix <- function(corr_matrix, range, correlation_function = 0, v=1.5){
   if (correlation_function == "exponential"){
     return( Exponential(corr_matrix, range = range) )
   }
@@ -76,11 +73,14 @@ posteriorDistribution <- function(size_predictionx, size_predictiony, samples, c
   sampling_pos = cbind(samples$x,samples$y)
   sampling_noise = samples$noise
   
-  correlation_prediction_observed = correlationMatrix(sampling_pos, prediction_pos, range = 5, correlation_function);
+  distances = constructDistanceMatrix(sampling_pos,prediction_pos)
+  correlation_prediction_observed = correlationMatrix(distances, range = 5, correlation_function);
   
-  correlation_prediction = correlationMatrix(prediction_pos, prediction_pos, range = 5, correlation_function);
+  distances = constructDistanceMatrix(prediction_pos,prediction_pos)
+  correlation_prediction = correlationMatrix(distances, range = 5, correlation_function);
   
-  correlation_observed = correlationMatrix(sampling_pos, sampling_pos, range = 5, correlation_function);
+  distances = constructDistanceMatrix(sampling_pos,sampling_pos)
+  correlation_observed = correlationMatrix(distances, range = 5, correlation_function);
   
   fitted_predictions = Xpred%*%glm_object$coefficients;
   
@@ -101,14 +101,13 @@ posteriorDistribution <- function(size_predictionx, size_predictiony, samples, c
   prediction_grid$z = fitted_predictions + sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
   variance$z = diag( sigma11 - sigma12sigma22%*%(t(sigma12)) )
   
-  fit = prediction_grid; fit$z = fitted_predictions
-  beforeFit = prediction_grid; beforeFit$z = sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
+  #fit = prediction_grid; fit$z = fitted_predictions
+  #beforeFit = prediction_grid; beforeFit$z = sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
   
-  othervariance = variance
   variance = xyz.to.grid(variance)
-  prediction_grid = xyz.to.grid(prediction_grid)
-  fit = xyz.to.grid(fit)
-  beforeFit = xyz.to.grid(beforeFit)
+  prediction = xyz.to.grid(prediction_grid)
+  #fit = xyz.to.grid(fit)
+  #beforeFit = xyz.to.grid(beforeFit)
   
-  return(list(prediction = prediction_grid, variance = variance, fit = fit, beforeFit = beforeFit,  othervariance = othervariance))
+  return(list(prediction_grid = prediction, variance = variance))#, fit = fit, beforeFit = beforeFit))
 }

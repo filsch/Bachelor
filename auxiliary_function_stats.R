@@ -47,14 +47,14 @@ glmLite <- function(trend, onlyFormula = FALSE, data, correlation_matrix){
   if (onlyFormula == TRUE){
     return(formula)
   }
-  mf = model.frame(formula = formula, data = data);
-  X  = model.matrix(attr(mf, "terms"), data = mf);
-  Y  = model.response(mf);
+  mf <- model.frame(formula = formula, data = data);
+  X <- model.matrix(attr(mf, "terms"), data = mf);
+  Y <- model.response(mf);
   
   #Performing GLS 
-  W = solve(correlation_matrix);
-  covariance = solve(t(X)%*%W%*%X);
-  beta = covariance%*%t(X)%*%W%*%Y; 
+  W <- chol2inv(chol(correlation_matrix));
+  covariance <- chol2inv(chol(crossprod(X, W %*% X)));
+  beta <- tcrossprod(covariance, X) %*% W %*% Y; 
   return(list(coefficients = beta, covar = covariance, formula = formula, X = X, terms = attr(mf, "terms")))
 }
 
@@ -65,30 +65,30 @@ posteriorDistribution <- function(correlation_function = 'exponential', glm_obje
                                   sampling_noise, dist_smpl_pred, dist_pred_pred, dist_smpl_smpl,
                                   Xobs, Xpred){
   
-  correlation_prediction_observed = correlationMatrix(dist_smpl_pred, range = range, correlation_function);
+  correlation_prediction_observed <- correlationMatrix(dist_smpl_pred, range = range, correlation_function);
   
-  correlation_prediction = correlationMatrix(dist_pred_pred, range = range, correlation_function);
+  correlation_prediction <- correlationMatrix(dist_pred_pred, range = range, correlation_function);
   
-  correlation_observed = correlationMatrix(dist_smpl_smpl, range = range, correlation_function);
+  correlation_observed <- correlationMatrix(dist_smpl_smpl, range = range, correlation_function);
   
-  fitted_predictions = Xpred%*%glm_object$coefficients;
+  fitted_predictions <- Xpred%*%glm_object$coefficients;
   
-  XpBETAtXo = Xpred%*%glm_object$covar%*%t(Xobs);
-  XpBETAtXp = Xpred%*%glm_object$covar%*%t(Xpred);
-  XoBETAtXo = Xobs%*%glm_object$covar%*%t(Xobs);
+  XpBETAtXo <- tcrossprod(Xpred %*% glm_object$covar, Xobs);
+  XpBETAtXp <- tcrossprod(Xpred %*% glm_object$covar, Xpred);
+  XoBETAtXo <- tcrossprod(Xobs  %*% glm_object$covar, Xobs);
   
   
   #Constructing the different parts of the variance matrix of the conditional multivariate normal
-  sigma12 = XpBETAtXo + correlation_prediction_observed * GRFsigma2
-  sigma22 = XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise*diag(dim(XoBETAtXo)[1]);
-  sigma11 = XpBETAtXp + correlation_prediction * GRFsigma2;
-  sigma22inv = solve(sigma22)
-  sigma12sigma22 = sigma12%*%sigma22inv
+  sigma12 <- XpBETAtXo + correlation_prediction_observed * GRFsigma2
+  sigma22 <- XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise*diag(dim(XoBETAtXo)[1]);
+  sigma11 <- XpBETAtXp + correlation_prediction * GRFsigma2;
+  sigma22inv <- chol2inv(chol(sigma22))
+  sigma12sigma22 <- sigma12 %*% sigma22inv   
   
   #Fitting predictions and variance 
   #variance = prediction_grid
-  prediction = fitted_predictions + sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)
-  variance = diag( sigma11 - sigma12sigma22%*%(t(sigma12)) )
+  prediction <- fitted_predictions + sigma12sigma22 %*% (samples$z - Xobs%*%glm_object$coefficients)
+  variance <- diag( sigma11 - tcrossprod(sigma12sigma22, sigma12) )
   
   #fit = prediction_grid; fit$z = fitted_predictions
   #beforeFit = prediction_grid; beforeFit$z = sigma12sigma22%*%(samples$z - Xobs%*%glm_object$coefficients)

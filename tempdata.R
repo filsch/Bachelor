@@ -15,4 +15,3 @@ image.plot(new_tempdata)
 image.plot(map)
 
 
-

@@ -77,10 +77,9 @@ posteriorDistribution <- function(correlation_function = 'exponential', glm_obje
   XpBETAtXp <- tcrossprod(Xpred %*% glm_object$covar, Xpred);
   XoBETAtXo <- tcrossprod(Xobs  %*% glm_object$covar, Xobs);
   
-  
   #Constructing the different parts of the variance matrix of the conditional multivariate normal
   sigma12 <- XpBETAtXo + correlation_prediction_observed * GRFsigma2
-  sigma22 <- XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise*diag(dim(XoBETAtXo)[1]);
+  sigma22 <- XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise;
   sigma11 <- XpBETAtXp + correlation_prediction * GRFsigma2;
   sigma22inv <- chol2inv(chol(sigma22))
   sigma12sigma22 <- sigma12 %*% sigma22inv   

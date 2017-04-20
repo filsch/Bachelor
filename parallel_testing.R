@@ -1,6 +1,8 @@
+#parallel testing
 #Source auxilliary functions
 source('~/Documents/Bachelor/auxiliary_function_procedure.R')
 source('~/Documents/Bachelor/auxiliary_function_stats.R')
+library(foreach)
 set.seed(4545)
 
 #TODO:
@@ -10,11 +12,11 @@ set.seed(4545)
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
 
-n = 20; #smoothness of mapping and prediction.
-n_samples = 20^2; #how many samples to take
+n = 30; #smoothness of mapping and prediction.
+n_samples = 8^2; #how many samples to take
 size_range = 10 #size of range discretization
 size_sigma = 10 #size of sigma2 discretization
-sampling_noise = 200; #sd of data collecting (on Z(s))
+sampling_noise = 5; #sd of data collecting (on Z(s))
 trend = 'cubic' #What trend to use for the regression of GRF
 
 
@@ -62,37 +64,52 @@ prediction_pos = cbind(prediction_grid$x, prediction_grid$y)
 sampling_pos = cbind(samples$x,samples$y)
 dist_smpl_pred = constructDistanceMatrix(sampling_pos,prediction_pos)
 dist_pred_pred = constructDistanceMatrix(prediction_pos,prediction_pos)
-dist_smpl_smpl = constructDistanceMatrix(sampling_pos,sampling_pos)
 
 sampling_noise = samples$noise*diag(length(samples$x))
 
 #Numerically integration over the prior domain
+correlation = foreach(i=1:size_range) %dopar% {correlationMatrix(corr_matrix=distance_matrix, range = prior_range[i], correlation_function = "exponential") 
+correlationMatrix(corr_matrix=distance_matrix, range = prior_range[i], correlation_function = "exponential")
+correlationMatrix(corr_matrix=distance_matrix, range = prior_range[i], correlation_function = "exponential")
+correlationMatrix(corr_matrix=dist_smpl_smpl, range = prior_range[i], correlation_function = "exponential")}
+
+
+glm_objects = list()
+covar = list()
 system.time(
-for (range in prior_range){
-  #New correlation_matrix for each range
-  correlation_matrix <- correlationMatrix(corr_matrix=distance_matrix, range = range, correlation_function = "exponential")
-  #Obtaining GLS fit with updated correlation_matrix
-  glm_object <- glmLite(trend=trend, data = samples, correlation_matrix = correlation_matrix)
-  covar <- glm_object$covar
-  
-  for (sigma2 in prior_sigma2){
-    cat('Iteration for prior pair: (',sigma2,',',range,') \n')
-    
-    #Constructing the only dependency on sigma2 in glm_object
-    glm_object$covar <- covar/sigma2
-    
-    #Obtaining joint probability for this particular (sigma2, range)
-    probability <- prior$prob[intersect(which(prior$sigma2 == sigma2), which(prior$range == range))]
-    
-    #Predicting the data with glm estimates of trend
-    temp_posterior <- posteriorDistribution(glm_object=glm_object, GRFsigma2 = sigma2, sampling_noise = sampling_noise,
-                                            dist_smpl_pred = dist_smpl_pred, dist_pred_pred = dist_pred_pred,
-                                            dist_smpl_smpl = dist_smpl_smpl, Xobs = Xobs, Xpred = Xpred)
-    
-    posterior_distribution$prediction$z <- posterior_distribution$prediction$z + temp_posterior$prediction*probability
-    posterior_distribution$variance$z <- posterior_distribution$variance$z + temp_posterior$variance*probability
-  }
+foreach(i=1:size_range) %dopar% {glmLite(trend=trend, data = samples, correlation_matrix = correlationMatrix(corr_matrix=distance_matrix, range = prior_range[i], correlation_function = "exponential"))}
+)
+system.time(
+for (i in 1:size_range){
+  glm_objects[[i]] = glmLite(trend=trend, data = samples, correlation_matrix = correlationMatrix(corr_matrix=distance_matrix, range = prior_range[i], correlation_function = "exponential"))
 }
+)
+
+system.time(
+  for (range in prior_range){
+
+    for (sigma2 in prior_sigma2){
+      cat('Iteration for prior pair: (',sigma2,',',range,') \n')
+      
+      fitted_predictions <- Xpred%*%glm_object$coefficients;
+      
+      XpBETAtXo <- tcrossprod(Xpred %*% glm_object$covar, Xobs);
+      XpBETAtXp <- tcrossprod(Xpred %*% glm_object$covar, Xpred);
+      XoBETAtXo <- tcrossprod(Xobs  %*% glm_object$covar, Xobs);
+      
+      #Constructing the different parts of the variance matrix of the conditional multivariate normal
+      sigma12 <- XpBETAtXo + correlation_prediction_observed * GRFsigma2
+      sigma22 <- XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise;
+      sigma11 <- XpBETAtXp + correlation_prediction * GRFsigma2;
+      sigma22inv <- chol2inv(chol(sigma22))
+      sigma12sigma22 <- sigma12 %*% sigma22inv   
+      
+      #Fitting predictions and variance 
+      #variance = prediction_grid
+      prediction <- fitted_predictions + sigma12sigma22 %*% (samples$z - Xobs%*%glm_object$coefficients)
+      variance <- diag( sigma11 - tcrossprod(sigma12sigma22, sigma12) )
+    }
+  }
 )
 points = matrix(numeric(n*n), nrow=n,ncol=n)
 points[cbind(samples$x,samples$y)] = 1

@@ -71,12 +71,11 @@ gridSampler <- function(n = 1, nx = 0, ny = 0, map, design, noise = 0){
     dim = round(sqrt(n))
 
     #Designed to have a perfect regular grid, closest to the actual n
-    increment = round( (xmax - xmin)/(dim + 1))
+    increment = round( (xmax - xmin)/(dim + 1) + 0.1)
 
     samples = expand.grid(x = seq(xmin, xmax - increment, increment),
                           y = seq(ymin, ymax - increment, increment))
     shift = round((min(samples$x) - xmin + xmax - max(samples$x))/2)
-    cat(shift, '\n')
     samples$x = samples$x + shift
     samples$y = samples$y + shift
     points = cbind(samples$x, samples$y)

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  20 APR 2017 13:40
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  21 APR 2017 19:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -620,43 +620,57 @@ Chapter 1.
 [2
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 69--70
+Underfull \hbox (badness 10000) in paragraph at lines 72--73
 
  []
 
 
-Overfull \hbox (77.6268pt too wide) in paragraph at lines 77--78
+Overfull \hbox (93.58514pt too wide) in paragraph at lines 80--81
 []\OT1/cmr/m/n/10 Data model: $\OML/cmm/m/it/10 Z\OT1/cmr/m/n/10 ([])\OMS/cmsy/
 m/n/10 j\OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ([])$ is Gaus-sian with mean $\OML/cm
 m/m/it/10 F \OMS/cmsy/m/n/10 ^^A \OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])[]\OML/c
 mm/m/it/10 ^^L$ \OT1/cmr/m/n/10 and vari-ance $\OML/cmm/m/it/10 F\OT1/cmr/m/n/1
-0 (\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])(\OML/cmm/m/it/10 X[]C[]X\OT1/cmr/m/n/
-10 )[]\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])[] +
+0 (\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])(\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([]
+)[]\OML/cmm/m/it/10 C[]X\OT1/cmr/m/n/10 ([]))[]\OML/cmm/m/it/10 X\OT1/cmr/m/n/1
+0 ([])[] +
  []
 
-[3] (./prosjektoppgave_bachelor.aux) ) 
+
+LaTeX Warning: Reference `proof' on page 3 undefined on input line 85.
+
+[3]
+
+LaTeX Warning: Reference `Integralet' on page 4 undefined on input line 96.
+
+[4] [5] (./prosjektoppgave_bachelor.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3521 strings out of 493014
- 49156 string characters out of 6133352
- 126485 words of memory out of 5000000
- 7009 multiletter control sequences out of 15000+600000
- 9628 words of font info for 35 fonts, out of 8000000 for 9000
+ 3526 strings out of 493014
+ 49204 string characters out of 6133352
+ 128485 words of memory out of 5000000
+ 7013 multiletter control sequences out of 15000+600000
+ 9936 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,6n,32p,633b,185s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2016/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy7.pfb>
-Output written on prosjektoppgave_bachelor.pdf (4 pages, 101637 bytes).
+ 37i,12n,32p,1009b,185s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
+></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
+</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
+/usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
+usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
+r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
+local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
+cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loca
+l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/t
+exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
+ive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
+ve/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on prosjektoppgave_bachelor.pdf (6 pages, 133052 bytes).
 PDF statistics:
- 53 PDF objects out of 1000 (max. 8388607)
- 37 compressed objects within 1 object stream
+ 71 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

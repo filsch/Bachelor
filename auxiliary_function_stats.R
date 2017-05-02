@@ -1,7 +1,6 @@
 #Auxilliary functions for bachelor-thesis, relevant for stats
 library(fields); library(akima); library(geoR); library(MASS); library(spatial); library(RSAGA); library(lattice)
 
-#----------------------------------------------------------------------------------------
 
 #Constructs an isotropic correlation matrix based on the Exponential and Matern correlation function 
 correlationMatrix <- function(corr_matrix, range, correlation_function = 0, v=1.5){
@@ -13,7 +12,6 @@ correlationMatrix <- function(corr_matrix, range, correlation_function = 0, v=1.
   } else {cat('Choose either exponential or matern','\n'); return()}
 }
 
-#----------------------------------------------------------------------------------------
 
 #Constructs a "priorfield", in this instance using a uniform prior for range and gamma for GRF variance
 priorField <- function(size_sigma, size_range, alpha=5, beta=0.5){
@@ -27,7 +25,6 @@ priorField <- function(size_sigma, size_range, alpha=5, beta=0.5){
   return(prior_field)
 }
 
-#----------------------------------------------------------------------------------------
 
 #Performs GLS estimation of the samples
 glmLite <- function(trend, onlyFormula = FALSE, data, correlation_matrix){
@@ -58,35 +55,34 @@ glmLite <- function(trend, onlyFormula = FALSE, data, correlation_matrix){
   return(list(coefficients = beta, covar = covariance, formula = formula, X = X, terms = attr(mf, "terms")))
 }
 
-#----------------------------------------------------------------------------------------
 
 #Constructs posterior distribution
 posteriorDistribution <- function(correlation_function = 'exponential', glm_object, GRFsigma2 = 1,
                                   sampling_noise, dist_smpl_pred, dist_pred_pred, dist_smpl_smpl,
-                                  Xobs, Xpred){
+                                  Xobs, Xpred, samples){
   
-  correlation_prediction_observed <- correlationMatrix(dist_smpl_pred, range = range, correlation_function);
+  c_p_s <- correlationMatrix(dist_smpl_pred, range = range, correlation_function);
   
-  correlation_prediction <- correlationMatrix(dist_pred_pred, range = range, correlation_function);
-  
-  correlation_observed <- correlationMatrix(dist_smpl_smpl, range = range, correlation_function);
+  c_p <- correlationMatrix(dist_pred_pred, range = range, correlation_function);
+
+  c_s <- correlationMatrix(dist_smpl_smpl, range = range, correlation_function);
   
   fitted_predictions <- Xpred%*%glm_object$coefficients;
   
-  XpBETAtXo <- tcrossprod(Xpred %*% glm_object$covar, Xobs);
-  XpBETAtXp <- tcrossprod(Xpred %*% glm_object$covar, Xpred);
-  XoBETAtXo <- tcrossprod(Xobs  %*% glm_object$covar, Xobs);
+  XpCOVtXo <- tcrossprod(Xpred %*% glm_object$covar, Xobs); #tcrossprod same as X %*% W %*% t(X), but slightly faster
+  XpCOVtXp <- tcrossprod(Xpred %*% glm_object$covar, Xpred);
+  XoCOVtXo <- tcrossprod(Xobs  %*% glm_object$covar, Xobs);
   
   #Constructing the different parts of the variance matrix of the conditional multivariate normal
-  sigma12 <- XpBETAtXo + correlation_prediction_observed * GRFsigma2
-  sigma22 <- XoBETAtXo + correlation_observed * GRFsigma2 + sampling_noise;
-  sigma11 <- XpBETAtXp + correlation_prediction * GRFsigma2;
-  sigma22inv <- chol2inv(chol(sigma22))
+  sigma12 <- XpCOVtXo + c_p_s * GRFsigma2
+  sigma22 <- XoCOVtXo + c_s * GRFsigma2 + sampling_noise;
+  sigma11 <- XpCOVtXp + c_p * GRFsigma2;
+  sigma22inv <- chol2inv(chol(sigma22)) #Inverse by Cholesky, a constant factor faster
   sigma12sigma22 <- sigma12 %*% sigma22inv   
   
   #Fitting predictions and variance 
   #variance = prediction_grid
-  prediction <- fitted_predictions + sigma12sigma22 %*% (samples$z - Xobs%*%glm_object$coefficients)
+  prediction <- fitted_predictions + sigma12sigma22 %*% (samples - Xobs%*%glm_object$coefficients)
   variance <- diag( sigma11 - tcrossprod(sigma12sigma22, sigma12) )
   
   #fit = prediction_grid; fit$z = fitted_predictions

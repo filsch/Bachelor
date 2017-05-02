@@ -4,8 +4,7 @@ source('~/Documents/Bachelor/auxiliary_function_stats.R')
 set.seed(4545)
 
 #TODO:
-# - Varians blir stor ved numerisk integrasjon
-# - Begynne ?? notere i latex
+# - Selvf??lgelig glemt noe i utregningen! mangler *[Z|theta, tau]
 
 #Adapting data from matrix form
 original_mapping = grid.to.xyz(t(volcano))
@@ -29,7 +28,7 @@ prior = priorField(size_sigma = size_sigma, size_range = size_range)
 #--------------------------------------------------------------------------------------------------------
 
 #Generating sample from grid by design
-samples = gridSampler(n = n_samples, map=map, design="regular", noise = sampling_noise)
+samples = gridSampler(nx = 20, ny=20, map=map, design="regular", noise = sampling_noise)
 #--------------------------------------------------------------------------------------------------------
 
 # Fitting trend w.r.t. covariance matrix and sample position

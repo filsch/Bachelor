@@ -1,8 +1,7 @@
 #Auxilliary functions for bachelor-thesis, NOT relevant for stats
 
-#----------------------------------------------------------------------------------------
 
-#Constructing square map with adapted axes as a matrix
+#Constructing map with adapted axes as a matrix
 reshapeMap <- function(map, grid_size = 0, type){
   if (type == 'square'){
     grid_x = grid_size
@@ -21,7 +20,6 @@ reshapeMap <- function(map, grid_size = 0, type){
   return(map)
 }
 
-#----------------------------------------------------------------------------------------
 #Opposite of grid.to.xyz, means loss of "true" coordinates
 xyz.to.grid <- function(map){
   nrows = max(map$x)
@@ -37,7 +35,6 @@ xyz.to.grid <- function(map){
   }
   return(grid)
 }
-#----------------------------------------------------------------------------------------
 
 #Constructing distance matrix in dim_samplepoints x dim_prediction_points
 constructDistanceMatrix <- function(sample_points, prediction_points){
@@ -53,11 +50,9 @@ constructDistanceMatrix <- function(sample_points, prediction_points){
   return(dist_matrix)
 }
 
-#----------------------------------------------------------------------------------------
-
 #Samples n samples with position from the grid
 #(To check the values: z[ intersect(which(square_map$y==a),which(square_map$x==b))) ]
-gridSampler <- function(n = 1, nx = 0, ny = 0, map, design, noise = 0){
+gridSampler <- function(nx = 0, ny = 0, map, design, noise = 0){
   xmax = dim(map)[1]; xmin = 1; ymax = dim(map)[2]; ymin = 1;
   #xmax = max(map$x);   ymax = max(map$y);   xmin = min(map$x);   ymin = min(map$y)
   if (xmin == 0){
@@ -68,16 +63,12 @@ gridSampler <- function(n = 1, nx = 0, ny = 0, map, design, noise = 0){
   }
   
   if (design == 'regular'){
-    dim = round(sqrt(n))
 
-    #Designed to have a perfect regular grid, closest to the actual n
-    increment = round( (xmax - xmin)/(dim + 1) + 0.1)
-
-    samples = expand.grid(x = seq(xmin, xmax - increment, increment),
-                          y = seq(ymin, ymax - increment, increment))
+    samples = expand.grid(x = seq(xmin, xmax - xmax/nx, length.out=nx),
+                          y = seq(ymin, ymax - ymax/ny, length.out=ny))
     shift = round((min(samples$x) - xmin + xmax - max(samples$x))/2)
-    samples$x = samples$x + shift
-    samples$y = samples$y + shift
+    samples$x = round(samples$x + shift)
+    samples$y = round(samples$y + shift)
     points = cbind(samples$x, samples$y)
     samples$z = map[points]
   } 
@@ -93,4 +84,21 @@ gridSampler <- function(n = 1, nx = 0, ny = 0, map, design, noise = 0){
   return(samples)
 }
 
-#----------------------------------------------------------------------------------------
+#Adapts the sailing lines to the map you'ld like to predict on.
+#Input: 
+# lines             - sailing lines in the form of xy-coordinates
+# prediction_map    - the map that one is to predict on, in the form of matrix grid
+# original_map      - the original mapping that the saillines are from. 
+#Output:
+# adapted_lines     - sailing lines in the form of xy-coordinates adapted to the axes of prediction_map
+adaptLines <- function(lines, prediction_map, original_map){
+  dims_p = dim(prediction_map)
+  dims_o = dim(original_map)
+  
+  ratiox = dims_p[1]/dims_o[1]
+  ratioy = dims_p[2]/dims_o[2]
+  
+  lines$x = round(lines$x*ratiox)
+  lines$y = round(lines$y*ratioy)
+  return(unique(lines))
+}

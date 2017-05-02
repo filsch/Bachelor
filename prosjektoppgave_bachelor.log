@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  21 APR 2017 19:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  29 APR 2017 19:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,24 +608,29 @@ e
 [1
 
 {/usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 32.
+(./prosjektoppgave_bachelor.toc)
+\tf@toc=\write3
+\openout3 = `prosjektoppgave_bachelor.toc'.
 
+ [1
+
+]
+Chapter 1.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 35.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 32.
- [1]
-Chapter 1.
-[2
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 35.
+ [2
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 72--73
+Underfull \hbox (badness 10000) in paragraph at lines 75--76
 
  []
 
 
-Overfull \hbox (93.58514pt too wide) in paragraph at lines 80--81
+Overfull \hbox (93.58514pt too wide) in paragraph at lines 83--84
 []\OT1/cmr/m/n/10 Data model: $\OML/cmm/m/it/10 Z\OT1/cmr/m/n/10 ([])\OMS/cmsy/
 m/n/10 j\OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ([])$ is Gaus-sian with mean $\OML/cm
 m/m/it/10 F \OMS/cmsy/m/n/10 ^^A \OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])[]\OML/c
@@ -635,12 +640,12 @@ mm/m/it/10 ^^L$ \OT1/cmr/m/n/10 and vari-ance $\OML/cmm/m/it/10 F\OT1/cmr/m/n/1
 0 ([])[] +
  []
 
-
-LaTeX Warning: Reference `proof' on page 3 undefined on input line 85.
-
 [3]
 
-LaTeX Warning: Reference `Integralet' on page 4 undefined on input line 96.
+LaTeX Warning: Reference `proof' on page 4 undefined on input line 88.
+
+
+LaTeX Warning: Reference `Integralet' on page 4 undefined on input line 99.
 
 [4] [5] (./prosjektoppgave_bachelor.aux)
 
@@ -648,11 +653,11 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3526 strings out of 493014
- 49204 string characters out of 6133352
- 128485 words of memory out of 5000000
- 7013 multiletter control sequences out of 15000+600000
- 9936 words of font info for 36 fonts, out of 8000000 for 9000
+ 3530 strings out of 493014
+ 49283 string characters out of 6133352
+ 129485 words of memory out of 5000000
+ 7014 multiletter control sequences out of 15000+600000
+ 10235 words of font info for 37 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,12n,32p,1009b,185s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
@@ -667,7 +672,7 @@ l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/t
 exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
 ive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on prosjektoppgave_bachelor.pdf (6 pages, 133052 bytes).
+Output written on prosjektoppgave_bachelor.pdf (6 pages, 134015 bytes).
 PDF statistics:
  71 PDF objects out of 1000 (max. 8388607)
  50 compressed objects within 1 object stream

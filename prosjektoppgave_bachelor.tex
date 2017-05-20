@@ -5,9 +5,9 @@ Tekst
 Tekst
 \section{Section}
 Tekst
-\subsection{Subsection}
+\secection{secection}
 Tekst
-\subsubsection{Subsubsection}
+\secubsection{secubsection}
 Tekst
 \paragraph{Paragraph}
 Tekst
@@ -28,102 +28,236 @@ Tekst
 
 \maketitle
 \tableofcontents
-\chapter{main}
-\section{Layout}
-\subsection{Hello}
+\subsection{Temporary layout}
 \begin{itemize}
-\item Intro
-\item Theory
+\item Introduction
+\item Spatial Gaussian Random Fields
+\item Spatial Design
 \item Case
-\item Code
+\item Conclusion
+\item References
 \end{itemize}
+\chapter{Preface}
+\chapter{Spatial Gaussian Random Fields}
+\section{Random Fields}
+\textbf{Dette stykket om random fields må vel forbedres}
 
-%\part{Introduction}
-\section{Theory}
-\subsection{Spatial prediction in general}
-\begin{itemize}
-\item data model, process model,  parameter model (whats this called?)
-\item Two of many ways to model: Proactive and retroactive / bayesian and frequentist, difference in model assumptions and estimating parameters 
+A random field is a set of random variables $Y(\vec{s}), \vec{s} \in \mathcal{R}^n$ that has a distribution function 
+\begin{equation} \label{eq:distribution_function}
+F(Y(s_1) \leq y_1, \dots , Y(s_n) \leq y_n)
+\end{equation} 
 
-\item Proactive: Bayesian with prior, distribution for all parameters, hyperpriors, posteriors, issue with uncommon distributions when using mixed models. Advantage: Able to produce predictions without samples Disadvantages: Relies on a good model, parameter estimates may be sensitive to choice of model thus needing expertise, needs heavy computations for complex models
+for any number n. A random field has typically some attribute that connects the random variables in $Y(\vec{s})$. Some examples of such attributes may be physical location, placement in a graph or just ordering in time.
 
-\item Retroactive: Estimating the parameters of the model based on samples collected, typical MLE, other ways of doing it (e.g. method of moments). Advantage: relatively easy. Disadvantages: Needs to have obtained samples, no samples no predictions
+Depending on the properties of the distribution function and the setting in which it is defined, we have many different types of random fields, e.g. Markov Random Fields, Gibbs Random Fields and Conditional Random Fields, all of which may again be used with different attributes connecting the variables of the field. 
 
-\item other differences between frequentist and bayesian way of modelling exists, but general
+For this particular project, the main focus will revolve around a random field of type \textit{Gaussian Random Field} (GRF). A GRF is set up so that the variables $Y(\vec{s})$ is governed by a \textit{Gaussian process}. In addition, the Gaussian process \textbf{eller feltet?} will be assumed to be stationary, meaning that the associated probability distributions of the Gaussian process is invariant to changes in time. This is an important property when specifying the Gaussian process associated with the GRF.
 
-\item write generally the distributions in a bayesian setting, retrospective used to estimate parameters -> not bayesian in that sense. integration to get the distribution that we're interested in
+\section{Covariance functions} \label{sec:covariance_functions}
 
-\item correlation functions, what is available and how do they work
-\end{itemize}
-Correlation in spatial prediction:
-defines a discretization of the field as a colection of random variables, isotropic (only euclidean distance) correlation function, many to choose, used matern with 3/2 dof, matern is smooth. 
-
-\section{Case study}
-\subsection{Case introduction}
-temperature data, interpreted in a spatial setting, independent of time
-\subsection{Case motivation}
-minimize variance of prediction
-\subsection{Case theory}
-\begin{itemize}
-\item notation
-\item Model build up and motivation of choice
-\item what this means in terms of expressions for all parameters
-\item what does this mean in relation to the goal of the case study
-\item proofs of theorems used?
-\item correlation function used, motivation for using this
-\end{itemize}
-For the case study of this project, several models have been used to perform predictions. However, the field that is to be predicted has been modelled as a GRF with Gaussian data error and priors in the exponential family, that is: \\
-\begin{enumerate}
-\item Data model: $[Z(\vec{s})|Y(\vec{s_0})] = F \cdot Y(\vec{s} | \vec{s_0}) + \epsilon$, where $\epsilon$ is Gaussian with mean 0 and variance $\sigma_{\epsilon}^2$
-\item Process model: Y is a GRF with $[Y(\vec{s_0}) | \sigma_{r}^2, \tau]  = X(\vec{s_0})\vec{\beta} + C_Y(\vec{s_0}, \sigma_{r}^2, \tau)$
-\item Parameter model: $\sigma_{range}^2 \sim Gamma(\alpha, \kappa), \tau \sim Exp(\lambda)$ 
-\end{enumerate}
-The trend of the GRF model is not known, and will have to be estimated somehow. In this case, this has been done by performing an Generlized Least Squares estimate of the sampled data $Z(\vec{s_0})$. In large enough samples, which are relatively small considering the size of the field, the distribution of the GLS estimate, $\hat\beta$, converges to a Gaussian with mean $\beta$ and covariance $(X(\vec{s_0})^{T}C_Y^{-1}X(\vec{s_0}))^{-1}$, where $C_Y$ denotes the correlation matrix between sampled areas. Combining this result with $Y(\vec{x})$ being assumed a GRF, we may rewrite our model with their full distributions:
-\begin{enumerate}
-\item Data model: $Z(\vec{s})|Y(\vec{s_0})$ is Gaussian with mean $F \cdot X(\vec{s})\hat{\vec{\beta}}$ and variance $F(X(\vec{s})(X(\vec{s_0})^{T}C_Y^{-1}X(\vec{s_0}))^{-1}X(\vec{s})^T + C_Y(\vec{s}, \sigma_{r}^2, \tau))F^T + \sigma_{\epsilon}^2$ 
-\item Process model: Y is a GRF $[Y(\vec{s_0}) | \sigma_{r}^2, \tau]  = X(\vec{s_0})\hat{\vec{\beta}} + C_Y(\vec{s_0}, \sigma_{r}^2, \tau)$
-\item Parameter model: $\sigma_{range}^2 \sim Gamma(\alpha, \kappa), \tau \sim Exp(\lambda)$ 
-\end{enumerate}
-
-The distribution of interest is that of $[Y(\vec{s}) | Z(\vec{s_0})]$, i.e. the underlying process data at locations $\vec{s}$ when having observed noisy data at locations $\vec{s_0}$. As both the data model and the process model is Gaussian with assumed known parameters, there is an exact analytical result for the ensuing distribution. First, the joint distribution of $\begin{bmatrix} Y(\vec{s}) \\ Z(\vec{s_0}) \end{bmatrix}$ is known bivariate Gaussian as both $ Y(\vec{s})$ and $Z(\vec{s_0})$ are Gaussian. Denote the expected values as $\begin{bmatrix} \mu_{Y(\vec{s})} \\ \mu_{Z(\vec{s_0})} \end{bmatrix}$ and their variance matrix as $\begin{bmatrix} \Sigma_{Y(\vec{s})} & \Sigma_{Y(\vec{s}), Z(\vec{s_0})} \\ \Sigma_{Z(\vec{s_0}), Y(\vec{s})} & \Sigma_{Z(\vec{s_0})} \end{bmatrix}$. Then, from \ref{proof}, we have that $[Y(\vec{s}) | Z(\vec{s_0}), \sigma_r^2, \tau]$ is also Gaussian with expected value $\mu$ and covariance matrix $\Sigma$ given as:
+For a GRF with equal variance for all associated variables, two of them being $X$ and $Y$, we have that the covariance is defined by:
 \begin{align*}
-\mu &= \mu_Y + \Sigma_{Y(\vec{s}), Z(\vec{s_0})} \Sigma_{Z(\vec{s_0})}^{-1}\big(z(\vec{s_o}) - \mu_{Z(\vec{s_0})} \big)\\
-\Sigma &= \Sigma_{Y(\vec{s})} - \Sigma_{Y(\vec{s}), Z(\vec{s_0})} \Sigma_{Z(\vec{s_0})}^{-1}\Sigma_{Z(\vec{s_0}), Y(\vec{s})}
+\frac{Cov( X, Y )}{\sqrt{Var( X )}\sqrt{Var( Y )}} = \frac{Cov( X, Y )}{\sigma^2} &= Corr(X, Y) \\
+\implies  Cov( X, Y ) &= \sigma^2 Corr(X, Y)
 \end{align*}
-Mainly, the expected value of the posterior $[Y(\vec{s}) | Z(\vec{s_0}),\sigma_r^2, \tau]$ and the variance, the diagonal of $\Sigma$, will be used to assess the posterior model. \\
-However, in this derivation of our distribution, the underlying parameters for the covariance of the process model are not part of the actual distribution of interest, $[Y(\vec{s}) | Z(\vec{s_0})]$. We may derive this final distribution by using a combination of conditional probability and integration over the domain of the prior parameters:
-\begin{align*}
-[Y(\vec{s}) | Z(\vec{s_0})] &= \int \int [Y(\vec{s}), \sigma_r^2, \tau | Z(\vec{s_0})] \ d\sigma_r^2 \ d\tau \\
-&= \int \int [Y(\vec{s})| Z(\vec{s_0}), \sigma_r^2, \tau] \cdot [\sigma_r^2, \tau | Z(\vec{s_0})] \ d\sigma_r^2 \ d\tau
-\end{align*}
-As we don't know the posterior distribution for the parameters $\sigma_r^2, \tau$, we use Bayes Theorem combined with proportionality to evaluate it in integral \ref{Integralet}, i.e.
-\begin{align*}
-[\sigma_r^2, \tau | Z(\vec{s_0})] \cdot [Z(\vec{s_0})] &= [Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2, \tau] \\
-\implies [\sigma_r^2, \tau | Z(\vec{s_0})] &\propto [Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2, \tau]
-\end{align*}
-As $[\sigma_r^2, \tau]$ is an assigned prior, we have given the priors $\sigma_r^2$ and $\tau$ independence with respect to each other. In addition, we need to scale the distribution to one for it to be a proper pdf. Combining this with a discretization of the priors, we get:
-\begin{align*}
-[\sigma_r^2, \tau | Z(\vec{s_0})] &= \frac{[Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2]\cdot [\tau]} {\int [Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2]\cdot [\tau] }
-\end{align*}
+with $\sigma^2$ being the variance parameter of the covariance function. So the covariance of two variables are linear their pairwise correlation. \\
 
-\subsection{Case main}
-\begin{itemize}
-\item sampling pattern,  relation to case motivation
-\end{itemize}
-\subsection{Case discussion}
-\begin{itemize}
-\item model
-\item motivation
-\item results
-\item critique
-\end{itemize}
-\subsection{Case code}
+Evidently, by defining a covariance function to use for å Gaussian process, one achieves a expression covariance with fewer parameters to estimate or set. This simplification is desireable and acceptable for many different models, as we now are down to estimate or set what is typically a couple of parameters compared to estimating $\frac{(n-1)\cdot(n - 2)}{2}$ covariances for a Gaussian process with $n$ variables. \\
 
-\section{Plan}
+In a spatial GRF setting as we will work with, the associated variables will be linked with a spatial location. The main argument for calculating the Euclidean distance between points, denoted as $d = |s_X - s_Y|$ where $s_A$ is the spatial location for variable A. Combine this with the fact that we have the Gaussian process as a stationary one, the covariance function simplifies to a single-argument function of $d$:
+\begin{equation}
+Corr(X, Y) = C(|s_X - s_Y|) = C(d)
+\end{equation}
+
+Whether this simplification is reasonable comes down to model specification. However, in a spatial setting where one is modelling geophysical attributes that only change significantly in time windows of thousands of years, there is a strong argument for. 
+
+For the choice of covariance funcions there are many possibilities. A simple function is the exponential correlation function:
+\begin{equation*}
+C(d) = exp(-\frac{d}{\tau})
+\end{equation*}
+where $d$ is the Euclidean distance between two stochastic points X and Y in the GRF. $\tau$ is a \textit{range} parameter, describing the intensity in which a certain should affect the correlation. For easy interpretation with this function, the distance $d = 3\tau$ is of interest as the resulting correlation is $exp(-3) \approx 0.05$.
+The exponential covariance function is derived as a special case of the family of \textit{Mátern covariance functions}. The Mátern covariance functions is defined in a stationary form, with distance $d$, range parameter $\tau$ and degrees of freedom $\nu$, as:
+\begin{equation}
+\label{eq:matern_function}
+C_{\nu}(d) = \sigma^2 \frac{2^{1-\nu}}{\Gamma(\nu)}\bigg( \frac{d}{\tau} \bigg)^{\nu} K_{\nu} \bigg( \sqrt{2\nu}\frac{d}{\tau} \bigg)
+\end{equation}
+where $K_{\nu}$ is the modified Bessel function of the second kind. The covariance functions obtained from the Mátern family makes sample paths of an associated Gaussian process become $\nu - 1$ differentiable. The equation in \ref{eq:matern_function} is seemingly a complicated affair to evaluate, but it is reducable to convenient forms for many choices of $\nu$. Three of them are:
+\begin{align} \label{eq:covariance_functions}
+\begin{split}
+\nu = \frac{1}{2}: \quad C_{\frac{1}{2}}(d) &= \sigma^2exp(-\frac{d}{\tau}) \\
+\nu = \frac{3}{2}: \quad C_{\frac{3}{2}}(d) &= \sigma^2 \bigg(1  +
+\frac{\sqrt{3}d}{\tau} \bigg) exp(-\frac{\sqrt{3}d}{\tau}) \\
+\nu = \frac{5}{2}: \quad C_{\frac{5}{2}}(d) &= \sigma^2 \bigg(1  +
+\frac{\sqrt{5}d}{\tau} + \frac{5d^2}{3\tau^2}\bigg) exp(-\frac{\sqrt{5}d}{\tau})
+\end{split}
+\end{align}
+We recognize the exponential covariance function as the Mátern covariance function with d.o.f. $\nu = \frac{1}{2}$. This again implies that we will not have differentiable sample paths when taken from a Gaussian process using this covariance function, something that's illustrated in \textbf{eksempel/plot}.  
+
+
+\section{Gaussian processes} \label{sec:gaussian_processes}
+Associated with every GRF is a underlying Gaussian process detailing the distributions of the variables contained in the field. The fundamental characterization of such a process is that all finitie-dimensional joint distributions for the variables of the process is multivariate normally distributed (MVN), and especially that each variable is normally distributed. Being distributed as a MVN, a Gaussian process is completely determined by its mean and covariance functions \textbf{Her må det vel et par referanser?}. Thus, the mean and covariance functions of a process are often a focus point in dealing with a Gaussian process. \\
+
+Amongst the many favourable properties of MVN distributions, we also have that the best predictor for an unobserved variable in a Gaussian process a linear function of the remaining observed variables. The predictor being a linear function of MVN distributed variables, the predictor as well is MVN distributed with an adjusted mean and covariance. \\ 
+
+\indent More precisely, if $\begin{bmatrix} A \\ B \end{bmatrix}$ is a vector of $n$ stochastic variables associated with a Gaussian process, meaning $\begin{bmatrix} A \\ B \end{bmatrix}$ has a distribution on the form of $\mathcal{MVN}(\begin{bmatrix} \mu_A \\ \mu_B \end{bmatrix}, \begin{bmatrix} \Sigma_{AA} & \Sigma_{AB} \\ \Sigma_{BA} & \Sigma_{BB} \end{bmatrix})$, where $\Sigma_{AB} = \Sigma_{AB}^T$ denotes the covariance between the variables in $A$ versus the variables in $B$.  given B, we have exact results for the best linear predictor. $P(A | B = b)$ will then be $MVN$ (or single Gaussian distributed if only one variable in $A$), with corrected mean $\mu_{A | B}$ and variance $\Sigma_{A | B}$ as:
+\begin{align}
+\mu_{A | B} &= \mu_A + \Sigma_{AB}\cdot \Sigma_{AA}^{-1}\big( b - \mu_B \big) \label{eq:gaussian_conditional_expectancy} \\
+\Sigma_{A | B} &= \Sigma_{AA} - \Sigma_{AB} \cdot \Sigma_{AA}^{-1} \cdot \Sigma_{BA} \label{eq:gaussian_conditional_variance}
+\end{align}
+
+In an uformal setting, one may interpret this as a linear smoothing of the parameters for the \textbf{reduced? glemt ordet} MVN distribution of $A$. Especially it's worth noting that since the covariance matrix $\Sigma_{AA}$ is positive definite, its inverse is as well, meaning that $\Sigma_{AB} \cdot \Sigma_{AA}^{-1} \cdot \Sigma_{BA} \geq 0$. This implies that the adjusted variance of $P(A | B = b)$ is lower or equal to the old: 
+\begin{equation}
+\Sigma_{AA} = \Sigma_{AA} - \Sigma_{AB} \cdot \Sigma_{AA}^{-1} \cdot \Sigma_{BA} \leq \Sigma_{AA}
+\end{equation}
+The equality will only hold for $\Sigma_{AB} = \mathbf{0}$, which would mean that $Cov(A, B) = 0$. Intuitively, this makes sense as then the realizations of $B$ shouldn't impact the values of $A$ at all. \\
+
+Evidently from the aforementioned property, when dealing with an Gaussian process it would be favourable to have well-defined expressions for its mean and covariance. One possible solution in the case of the process-covariance is to use a covariance function to define the covariance between variables given some criteria to evaluate.
+
+\textbf{Verdt å nevne noen flere ting om Gaussiske prosesser?}
+
+
+\chapter{Spatial Design}
+\textbf{Proactive, retroactive} 
+
+\textbf{Minimaliserer forventet standardavvik} 
+
+\section{Model design} \label{model:hm}
+One common way of defining the model used to relate the process of dataacquirement to the properties of the GRF is by a hierarchical model. A hierarchical model divides the spatial design model 
+into three parts: 
 \begin{itemize}
-\item Skrive ned prosessmodel og påfølgende fordelinger på en fornuftig og oversiktlig måte
-\item Skrive om korrelasjonsfunksjoner og hvilken som er brukt her 
-\item Bevis for at to gaussiske fordelinger gir en ny gaussisk fordeling ved kondisjonell fordeling
+\item Data model - Describes the relation between process and datasampling
+\item Process model - Describes the model properties of the GRF 
+\item Prior model - Priors used in the case of Bayesian modelling of parameters
 \end{itemize}
 
+An example of such a model may be given for the case example used to generate the sample paths in \textbf{Ref til sample paths eksempel} \ref{fig:sample_paths}. In this model the parameters of the underlying GP is set, so 'Prior model' is omitted. Denoting $Z$ as the sampled data, $Y$ as the underlying GP and parameters $\mu, \tau, \sigma^2, \phi$:
+\begin{itemize}
+\item Data model: $Z(\vec{s}) \sim \mathcal{N}\big(F(\vec{s}) \cdot Y(\vec{s}), \ \phi^2I(\vec{s})\big)$
+\item Process model: $Y(\vec{s}) \sim \mathcal{N}\big( \vec{\mu}, \ C_Y(D, \sigma^2, \tau) \big)$ 
+\end{itemize}
+where $\vec{s} \in \mathcal{R}^n$ is the vector of points in question, $D$ denotes a symmetric $n \times n$ matrix of distances between points in the field, F is a matrix indicating sampling of data and $C_Y(\dots)$ the chosen covariance function. For the sample path examples in \ref{fig:sample_paths} the three covariance functions in \ref{eq:covariance_functions} have been used. \\
+
+By using the linearity property of Gaussian variables, we may write the models as linear combinations of their means and covariances, i.e. 
+\begin{itemize}
+\item Data model: $Z(\vec{s}) = F(\vec{s}) \cdot Y(\vec{s}) + \epsilon, \quad \epsilon \sim \mathcal{N} \big(\vec{0},\phi^2I(\vec{s}) \big)$
+\item Process model: $Y(\vec{s}) = \vec{\mu} + \rho, \quad \rho \sim \mathcal{N} \big(\vec{0}, C_Y(D, \sigma^2, \tau ) \big) $ 
+\end{itemize}
+This is a unique property of models with a GRF and Gaussian distributed errors and is of no difference compared to the first model.
+
+\section{Sampling design} 
+\label{sec:sampling_design}
+\textbf{Dette er noe rotete}
+In spatial predictioning, the choice of which spatial locations, or spatial design, to sample data from becomes critical. In order to achieve the best design, one would have to choose in cohesion with the model that is defined for the data situation and as to what criteria the model is trying to satisfy. If the overall goal is to minimize the expected variance over the whole field that is under investigation, the best option in many cases would be to sample a regular spaced grid to get measurements that cover the whole field. Some additional points placed with a random distance and placement to its neighbours in the grid would be effective for estimating parameters of the model, e.g. the nugget-effect, variance of the underlying process or range parameter. However, such measurements can be expensive and time consuming to perform, motivating the consideration of how the models spatial design is defined. \\
+
+\textbf{(Kanskje et avsnitt her for å sy de to sammen?)} \\
+
+Having performed the sampling of data and constructed the predictions, one could also evaluate ones spatial design to improve it. This can easily be done by using e.g. cross-valdation techniques, so that one may reduce or alter ones design after some criteria. A typical criteria could be to decrease the number of sampling points in the design without significant losses in the information obtained. This could obviously be valuable if the data sampling is expensive or time consuming.  
+
+\chapter{Case}
+\textbf{Motivasjon og kriterie, romlig forventet standardavvik, fjerne usikkerhet i parametervalg} \\
+\section{Case specification} 
+\subsection{Introduction and case goals} \label{subs:goals}
+In this case I've been presented with the task of performing a predictive analysis of an attribute that may be modelled by a random field. The scenario is that there is a desire in knowing the sealevel height gradient for a specific physical location, and one would like to perform predictive analysis with the following goals in mind:
+\begin{itemize} 
+\item Perform satisfactory accurate predictions
+\item Minimize sailing needed to predict
+\end{itemize} 
+
+\subsection{Input}
+The only information that we're presented with beforehand is a variogram computed on the basis of some satelite data. This is however reckoned as slightly unreliable data and must be handled accordingly. The area in which the analysis will be based on is given as a list of xy-coordinates with each coordinate being given a z-variable denoting the numerical value to the attribute of interest. There is a total of 29116 coordinates, ordered into a rectangular grid with size 116 in x-direction and size 251 in y-direction. The directions will informally be called easting and northing when plotting. The variogram is presented in \ref{fig:variogram} along with the original data which we desire to predict. \\
+
+\textbf{Modelspesifikasjon og utgangspunkt} \\
+\subsection{Modelspecification and starting point of analysis} \label{subs:model}
+As a necessary preliminary for the predictive analysis the height gradient attribute of all the coordinates is modelled as a stochastic variable. Attaining a Gaussian process to describe trend and variability of model one may view the grid as a GRF. Stationarity is reasonable to assume as the case is of predicting geophysical attributes that are unlikely to change within time-scales up to the thousands of years. The connection between variables in this model will revolve around spatial location within the grid, set in combination iwth stationarity we have that both the trendfunction and covariancefunction may be set to single-argument functions. \\
+The model process may be fitted into the hierarchical model (HM) design described in \ref{model:hm}. With $Y(\vec{s})$ denoting the gradient height variables at locations $\vec{s}$, that's set to be distributed according to the Gaussian process, the process model follows as:
+\begin{equation}
+Y(\vec{s}) \sim \mathcal{MVN} \big( \ \mu(\vec{s}), \ \Sigma (\vec{s}) \big) 
+\end{equation}
+Here $\mu(\vec{s})$ denotes the trendfunction and $\Sigma((\vec{s})$ denotes the covariance function, both given easting-northing coordinates of the variables in question. \textbf{Noe mer her? Motivasjon for å velge Gaussisk fordeling} \\
+
+With only a process model, one could have assumed noise-free sampling of data and started deriving results and predictions for the unobserved variables of the GRF. However, noise-free sampling may seem unreasonable in many settings. Gaussian distributed noise is a common way to model the unreliability of mearsurement equipment and/or random noise. Denoting the actual data being sampled from locations $\vec{s}$ in the GRF as $Z(\vec{s})$, the data model is then defined as:
+\begin{equation}
+Z(\vec{s}) \sim \mathcal{MVN} \big( \ Y(\vec{s}), \ \epsilon^2 I \big)
+\end{equation}
+Evidently, we assume that the noise is distributed independently on each sample with a single constant variance \textbf{Hvordan rimelig}. \\ 
+
+
+\textbf{Utledning av framgangsmåte} \\
+\section{Analysis}
+\subsection{Goals of analysis}
+As a useful tool when performing the analysis, the goals in \ref{:goals} will need to be framed to suit how the model has been specified. By doing so, one achieves concrete criterias in which to perform the analysis of data after. The goals in \ref{:goals} can for instance be rephrased into "Minimizing the expected standard deviation of predictions on the basis of as few measurements as realistically possible", expressed in an equation as:
+\textbf{Her må noe skrives om. Å gjøre ny varians utregning vil være heavy}
+\begin{equation}
+I = \sum_{z_a} \sum_{i=1}^n \sqrt{ Var_{y_a | z_a, z} } P(z_a | z) 
+\end{equation}
+where $z$ is the original samples, $z_a$ is the possible added samples, $y_a$ denotes the underlying process of data in $z_a$ and $I$ is the total measure. There is trade-off between how many measurements one may be able to perform versus how much information that will give. One may measure this trade-off by the averaged standard deviation of predictions, meaning that we may evaluate said criteria by a cost-function if there were one associated to this analysis. 
+
+\subsection{Theory}
+With the data model and process model somewhat defined, the issue of choosing trend- and covariancefunctions arises. The discussion of covariancefunctions was covered in \ref{:covariance_functions}, and results will be presented for all three covariance functions shown in \ref{eq:covariance_functions}. \textbf{Si noe om hvorfor disse velges?} \\ 
+The trendfunction is another matter. As we are unaware of any data in the grid that may be related to the trend of the GRF model, the better option that is left is to estimate the trend based on the datacollection. The trendfunction is defined as a polynomial function of spatial location on the form $\mu(\vec{s}) = X(\vec{s})\vec{\beta}$, where X is a design matrix corresponding to the locations $\vec{s}$ and $\vec{\beta}$ is vector of coefficients. By doing so we may utilize results from the theory of \textit{Generalized Linear Models} (GLM) in the estimation of trend. One particular advantage of using GLM is that we are guaranteed by the Gauss-Markov Theorem that the GLM estimates is the \textit{Best Linear Unbiased Estimator} (BLUE) for the vector of coefficients $\vec{\beta}$. \\
+
+One of two caveats with using GLM estimates is that one still need to specify the polynomial trendfunction to fit the data, meaning there's still a selection process. As the trendfunction is to specified by spatial location for this case, one must face the second caveat. The GLM estimates are the BLUE only for the data and their associated spatial location used in the estimation, giving no guarantee for the prediction of data not part of the estimates. By this, the trendfunction will be selected to be a polynomial of lower order with simple interaction between easting- and northing-coordinates. This has been chosen as an prediction far away from the sample data will typically be over- or underpredicted by an unacceptable amount using a higher-order polynomial. This is due to the covariates of said polynomial will be fitted to the data that has been sampled, which in this case will be done mainly by specified design of low regularity. In sampling designs with high regularity over the field, this is effect is handled as then the estimation will try to adapt to grid points that are within a certain distance from each other. An example of this issue is shown in figures \ref{fig:predictions_polynomials} along with the original data for comparison.  \\
+
+For the acutal selection of model, there has been used a ... R2-squared criteria etc etc \\
+
+When the samples are drawn from a distribution with known correlation matrix $\Omega = \sigma^2 \cdot W$, with $\sigma^2$ is constant finite variance parameter and $W$ the correlation matrix, the estimates of $\vec{\beta}$ converge in distribution to a MVN, or more precisely
+\begin{equation}
+\hat{\vec{\beta}} \xrightarrow[]{d} \mathcal{MVN} \big( \ \vec{\beta}, \ (X^T \Omega^{-1} X)^{-1} \big)
+\end{equation}
+where $X$ denotes the associated design matrix of the samples estimated.
+
+\subsection{Deriving the posterior GRF}
+The ultimate goal of the analysis is to provide a result for the posterior distribution of the underlying Gaussian process, given some sample data, that is $P \big( Y(\vec{s}) | Z(\vec{s_0}) \big)$ where $\vec{s}$ denotes the whole coordinates of the whole field and $\vec{s_0}$ denotes the coordinates of samples obtained. This distribution is derived as 
+\begin{align*}
+\begin{split}
+P \big( Y(\vec{s}) | Z(\vec{s_0}) \big) &= \int \int P \big( Y(\vec{s}), \sigma^2, \tau | \ Z(\vec{s_0}) \big) \ d\sigma^2 \ d\tau \\
+&= \int \int P \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2, \tau \big) \cdot P\big( \sigma^2, \tau | Z(\vec{s_0}) \big) \ d\sigma^2 \ d\tau 
+\end{split}
+\end{align*}
+Further, we use Bayes Theorem 
+\begin{align}\label{eq:posterior_prior}
+\begin{split}
+P\big( \sigma^2, \tau | Z(\vec{s_0}) \big) &\propto P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2, \tau \big) \\
+&\propto P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big) \\
+\implies P\big( \sigma^2, \tau | Z(\vec{s_0}) \big) &= \frac{P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big)}{\int \int P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big) d\sigma^2 d\tau}
+\end{split}
+\end{align}
+This implies that 
+\begin{align}\label{eq:grf_posterior}
+\begin{split}
+P \big( Y(\vec{s}) | Z(\vec{s_0}) \big) &= \int \int P \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2, \tau \big) \cdot \frac{P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big)}{\int \int P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big) d\sigma^2 d\tau} \ d\sigma^2 \ d\tau
+\end{split}
+\end{align}
+
+An exact analytical result for the posterior found in both \ref{eq:grf_posterior} and \ref{eq:posterior_prior} may be found under the with the appropriate priors, but to acommodate any type of prior from a probability distribution, the integrals is approximated by a simple numerical procedure. This is done by discretizing the domain of $\sigma^2$ and $\tau$ and summing over the discretizied values with some weight $\Delta$ for each discretization to ensure normalization, giving an approximation as
+\begin{align*}
+\begin{split}
+P \big( Y(\vec{s}) | Z(\vec{s_0}) \big) &\approx \sum_{\tau_i} \sum_{\sigma^2_j} \Delta_{ij} \cdot P \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2_j, \tau_i \big) \cdot \frac{P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big) \cdot P\big( \sigma^2_j \big) \cdot P\big( \tau_i \big)}{\sum_{\tau_i} \sum_{\sigma^2_j} P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big) \cdot P\big( \sigma^2_j \big) \cdot P\big( \tau_i \big) \cdot \Delta_{ij} } \ \\
+P \big( Y(\vec{s}) | Z(\vec{s_0}) \big) &\approx \frac{1}{\Pi}\sum_{\tau_i} \sum_{\sigma^2_j} \Delta_{ij} \cdot P \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2_j, \tau_i \big) \cdot P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big) \cdot P\big( \sigma^2_j \big) \cdot P\big( \tau_i \big)  
+\end{split}
+\end{align*}
+With $\Pi = \sum_{\tau_i} \sum_{\sigma^2_j} P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big) \cdot P\big( \sigma^2_j \big) \cdot P\big( \tau_i \big) \cdot \Delta_{ij}$ as the normalizing constant. \\
+
+For this integration to be performed, four distributions need to be defined: $P\big( \sigma^2_j \big)$ and $P\big( \tau_i \big)$ are priors given by the model, $P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big)$ is known MVN by the model specification and lastly we have that $P \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2_j, \tau_i \big)$ is MVN by the results presented in \ref{sec:gaussian_processes} with $Y(\vec{s})$ as $A$ and $Z(\vec{s_0})$ as $B$. \\
+
+When performing the numerical integration, it is noted that it's the mean and variance of $P\big( \sigma^2, \tau | Z(\vec{s_0}) \big)$ that's of relevance for the predictions. By similar arguments as above, one gets:
+\begin{align}
+\begin{split}
+\mathbf{E} \big( Y(\vec{s}) | Z(\vec{s_0}) \big) &= \int \int \mathbf{E} \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2, \tau \big) \cdot \frac{P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big)}{\int \int P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big) d\sigma^2 d\tau} \ d\sigma^2 \ d\tau \\
+&\approx \frac{1}{\Pi}\sum_{\tau_i} \sum_{\sigma^2_j} \Delta_{ij} \cdot \mathbf{E} \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2_j, \tau_i \big) \cdot P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big) \cdot P\big( \sigma^2_j \big) \cdot P\big( \tau_i \big) \\
+\mathbf{Var} \big( Y(\vec{s}) | Z(\vec{s_0}) \big) &= \int \int \mathbf{Var} \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2, \tau \big) \cdot \frac{P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big)}{\int \int P\big( Z(\vec{s_0}) | \sigma^2, \tau \big) \cdot P\big( \sigma^2 \big) \cdot P\big( \tau \big) d\sigma^2 d\tau} \ d\sigma^2 \ d\tau \\
+&\approx \frac{1}{\Pi}\sum_{\tau_i} \sum_{\sigma^2_j} \Delta_{ij} \cdot \mathbf{Var} \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2_j, \tau_i \big) \cdot P\big( Z(\vec{s_0}) | \sigma^2_j, \tau_i \big) \cdot P\big( \sigma^2_j \big) \cdot P\big( \tau_i \big) \\\end{split}
+\end{align}
+with $\Pi$ defined as before. The expressions of $\mathbf{E} \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2, \tau \big)$ and $\mathbf{Var} \big( Y(\vec{s}) | Z(\vec{s_0}), \sigma^2, \tau \big)$ is given in \ref{eq:gaussian_conditional_expectancy} and \ref{eq:gaussian_conditional_variance}.
+
+\subsection{Chossing prior-parameters}
+As a consequence of defining our model with priordistributions for $\sigma^2$ and $\tau$ with
+
+
+\textbf{Resultater} \\
+\chapter{Conclusion}
+\textbf{Summer opp} \\
+\textbf{Alternativer - komputasjonsmessig kostbart å bruke normalfordeling} \\
+\chapter{References}
+\textbf{Hvor nøye med refere til skriverier?}
 \end{document}

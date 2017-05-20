@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  8 MAY 2017 14:14
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  19 MAY 2017 14:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -612,70 +612,226 @@ e
 \tf@toc=\write3
 \openout3 = `prosjektoppgave_bachelor.toc'.
 
- [1
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 33.
 
-]
-Chapter 1.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 35.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 35.
- [2
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 33.
+ [1
+
+] [2]
+Chapter 1.
+[3
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 75--76
+Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 62--64
 
  []
 
 
-Overfull \hbox (93.58514pt too wide) in paragraph at lines 83--84
-[]\OT1/cmr/m/n/10 Data model: $\OML/cmm/m/it/10 Z\OT1/cmr/m/n/10 ([])\OMS/cmsy/
-m/n/10 j\OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ([])$ is Gaus-sian with mean $\OML/cm
-m/m/it/10 F \OMS/cmsy/m/n/10 ^^A \OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])[]\OML/c
-mm/m/it/10 ^^L$ \OT1/cmr/m/n/10 and vari-ance $\OML/cmm/m/it/10 F\OT1/cmr/m/n/1
-0 (\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([])(\OML/cmm/m/it/10 X\OT1/cmr/m/n/10 ([]
-)[]\OML/cmm/m/it/10 C[]X\OT1/cmr/m/n/10 ([]))[]\OML/cmm/m/it/10 X\OT1/cmr/m/n/1
-0 ([])[] +
+Underfull \hbox (badness 10000) in paragraph at lines 65--66
+
  []
 
-[3]
+[4
 
-LaTeX Warning: Reference `proof' on page 4 undefined on input line 88.
+]
+Underfull \hbox (badness 10000) in paragraph at lines 98--99
+
+ []
+
+[5]
+Underfull \hbox (badness 10000) in paragraph at lines 100--101
+
+ []
 
 
-LaTeX Warning: Reference `Integralet' on page 4 undefined on input line 99.
+Underfull \hbox (badness 10000) in paragraph at lines 111--113
 
-[4] [5] (./prosjektoppgave_bachelor.aux)
+ []
+
+[6]
+Chapter 3.
+
+LaTeX Warning: Reference `fig:sample_paths' on page 7 undefined on input line 1
+33.
+
+
+LaTeX Warning: Reference `fig:sample_paths' on page 7 undefined on input line 1
+38.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--139
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 149--151
+
+ []
+
+[7
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 152--153
+
+ []
+
+[8]
+Chapter 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--158
+
+ []
+
+
+LaTeX Warning: Reference `fig:variogram' on page 9 undefined on input line 167.
+
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 167--168
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 169--170
+
+ []
+
+[9
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 175--177
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 181--183
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 185--186
+
+ []
+
+
+LaTeX Warning: Reference `:goals' on page 10 undefined on input line 188.
+
+
+LaTeX Warning: Reference `:goals' on page 10 undefined on input line 188.
+
+[10]
+
+LaTeX Warning: Reference `:covariance_functions' on page 11 undefined on input 
+line 196.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 196--198
+
+ []
+
+
+LaTeX Warning: Reference `fig:predictions_polynomials' on page 11 undefined on 
+input line 199.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 199--200
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 201--202
+
+ []
+
+[11]
+Overfull \hbox (8.724pt too wide) in paragraph at lines 230--230
+[] 
+ []
+
+
+Overfull \hbox (37.54526pt too wide) in paragraph at lines 238--238
+[] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 238--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 241--242
+
+ []
+
+
+Overfull \hbox (29.23071pt too wide) in paragraph at lines 250--250
+[] 
+ []
+
+[12]
+Overfull \hbox (2.63803pt too wide) in paragraph at lines 250--252
+\OT1/cmr/m/n/10 with $^^E$ de-fined as be-fore. The ex-pres-sions of $\OT1/cmr/
+bx/n/10 E[]\OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ([])\OMS/cmsy/m/n/10 j\OML/cmm/m/i
+t/10 Z\OT1/cmr/m/n/10 ([])\OML/cmm/m/it/10 ; ^^[[]; ^^\[]$ \OT1/cmr/m/n/10 and 
+$[][]\OML/cmm/m/it/10 Y\OT1/cmr/m/n/10 ([])\OMS/cmsy/m/n/10 j\OML/cmm/m/it/10 Z
+\OT1/cmr/m/n/10 ([])\OML/cmm/m/it/10 ; ^^[[]; ^^\[]$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 257--258
+
+ []
+
+[13]
+Chapter 5.
+
+Underfull \hbox (badness 10000) in paragraph at lines 259--261
+
+ []
+
+[14
+
+]
+Chapter 6.
+[15
+
+] (./prosjektoppgave_bachelor.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3530 strings out of 493014
- 49283 string characters out of 6133352
- 129485 words of memory out of 5000000
- 7014 multiletter control sequences out of 15000+600000
- 10235 words of font info for 37 fonts, out of 8000000 for 9000
+ 3553 strings out of 493014
+ 49708 string characters out of 6133352
+ 152622 words of memory out of 5000000
+ 7034 multiletter control sequences out of 15000+600000
+ 11200 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,12n,32p,1009b,185s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,19n,32p,1327b,185s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></
-usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></us
-r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/
-local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/lo
-cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loca
-l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/t
-exlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texl
-ive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
-ve/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on prosjektoppgave_bachelor.pdf (6 pages, 135312 bytes).
+usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></us
+r/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/
+local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/lo
+cal/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/loca
+l/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/
+texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/tex
+live/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texliv
+e/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive
+/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2
+016/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on prosjektoppgave_bachelor.pdf (16 pages, 198388 bytes).
 PDF statistics:
- 71 PDF objects out of 1000 (max. 8388607)
- 50 compressed objects within 1 object stream
+ 112 PDF objects out of 1000 (max. 8388607)
+ 79 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

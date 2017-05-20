@@ -1,0 +1,87 @@
+\part{Waste}
+\subsection{Spatial prediction in general}
+\begin{itemize}
+\item data model, process model,  parameter model (whats this called?)
+\item Two of many ways to model: Proactive and retroactive / bayesian and frequentist, difference in model assumptions and estimating parameters 
+
+\item Proactive: Bayesian with prior, distribution for all parameters, hyperpriors, posteriors, issue with uncommon distributions when using mixed models. Advantage: Able to produce predictions without samples Disadvantages: Relies on a good model, parameter estimates may be sensitive to choice of model thus needing expertise, needs heavy computations for complex models
+
+\item Retroactive: Estimating the parameters of the model based on samples collected, typical MLE, other ways of doing it (e.g. method of moments). Advantage: relatively easy. Disadvantages: Needs to have obtained samples, no samples no predictions
+
+\item other differences between frequentist and bayesian way of modelling exists, but general
+
+\item write generally the distributions in a bayesian setting, retrospective used to estimate parameters -> not bayesian in that sense. integration to get the distribution that we're interested in
+
+\item correlation functions, what is available and how do they work
+\end{itemize}
+Correlation in spatial prediction:
+defines a discretization of the field as a colection of random variables, isotropic (only euclidean distance) correlation function, many to choose, used matern with 3/2 dof, matern is smooth. 
+
+\section{Case study}
+\subsection{Case introduction}
+temperature data, interpreted in a spatial setting, independent of time
+\subsection{Case motivation}
+minimize variance of prediction
+\subsection{Case theory}
+\begin{itemize}
+\item notation
+\item Model build up and motivation of choice
+\item what this means in terms of expressions for all parameters
+\item what does this mean in relation to the goal of the case study
+\item proofs of theorems used?
+\item correlation function used, motivation for using this
+\end{itemize}
+For the case study of this project, several models have been used to perform predictions. However, the field that is to be predicted has been modelled as a GRF with Gaussian data error and priors in the exponential family, that is: \\
+\begin{enumerate}
+\item Data model: $[Z(\vec{s})|Y(\vec{s_0})] = F \cdot Y(\vec{s} | \vec{s_0}) + \epsilon$, where $\epsilon$ is Gaussian with mean 0 and variance $\sigma_{\epsilon}^2$
+\item Process model: Y is a GRF with $[Y(\vec{s_0}) | \sigma_{r}^2, \tau]  = X(\vec{s_0})\vec{\beta} + C_Y(\vec{s_0}, \sigma_{r}^2, \tau)$
+\item Parameter model: $\sigma_{range}^2 \sim Gamma(\alpha, \kappa), \tau \sim Exp(\lambda)$ 
+\end{enumerate}
+The trend of the GRF model is not known, and will have to be estimated somehow. In this case, this has been done by performing an Generlized Least Squares estimate of the sampled data $Z(\vec{s_0})$. In large enough samples, which are relatively small considering the size of the field, the distribution of the GLS estimate, $\hat\beta$, converges to a Gaussian with mean $\beta$ and covariance $(X(\vec{s_0})^{T}C_Y^{-1}X(\vec{s_0}))^{-1}$, where $C_Y$ denotes the correlation matrix between sampled areas. Combining this result with $Y(\vec{x})$ being assumed a GRF, we may rewrite our model with their full distributions:
+\begin{enumerate}
+\item Data model: $Z(\vec{s})|Y(\vec{s_0})$ is Gaussian with mean $F \cdot X(\vec{s})\hat{\vec{\beta}}$ and variance $F(X(\vec{s})(X(\vec{s_0})^{T}C_Y^{-1}X(\vec{s_0}))^{-1}X(\vec{s})^T + C_Y(\vec{s}, \sigma_{r}^2, \tau))F^T + \sigma_{\epsilon}^2$ 
+\item Process model: Y is a GRF $[Y(\vec{s_0}) | \sigma_{r}^2, \tau]  = X(\vec{s_0})\hat{\vec{\beta}} + C_Y(\vec{s_0}, \sigma_{r}^2, \tau)$
+\item Parameter model: $\sigma_{range}^2 \sim Gamma(\alpha, \kappa), \tau \sim Exp(\lambda)$ 
+\end{enumerate}
+
+The distribution of interest is that of $[Y(\vec{s}) | Z(\vec{s_0})]$, i.e. the underlying process data at locations $\vec{s}$ when having observed noisy data at locations $\vec{s_0}$. As both the data model and the process model is Gaussian with assumed known parameters, there is an exact analytical result for the ensuing distribution. First, the joint distribution of $\begin{bmatrix} Y(\vec{s}) \\ Z(\vec{s_0}) \end{bmatrix}$ is known bivariate Gaussian as both $ Y(\vec{s})$ and $Z(\vec{s_0})$ are Gaussian. Denote the expected values as $\begin{bmatrix} \mu_{Y(\vec{s})} \\ \mu_{Z(\vec{s_0})} \end{bmatrix}$ and their variance matrix as $\begin{bmatrix} \Sigma_{Y(\vec{s})} & \Sigma_{Y(\vec{s}), Z(\vec{s_0})} \\ \Sigma_{Z(\vec{s_0}), Y(\vec{s})} & \Sigma_{Z(\vec{s_0})} \end{bmatrix}$. Then, from \ref{proof}, we have that $[Y(\vec{s}) | Z(\vec{s_0}), \sigma_r^2, \tau]$ is also Gaussian with expected value $\mu$ and covariance matrix $\Sigma$ given as:
+\begin{align*}
+\mu &= \mu_Y + \Sigma_{Y(\vec{s}), Z(\vec{s_0})} \Sigma_{Z(\vec{s_0})}^{-1}\big(z(\vec{s_o}) - \mu_{Z(\vec{s_0})} \big)\\
+\Sigma &= \Sigma_{Y(\vec{s})} - \Sigma_{Y(\vec{s}), Z(\vec{s_0})} \Sigma_{Z(\vec{s_0})}^{-1}\Sigma_{Z(\vec{s_0}), Y(\vec{s})}
+\end{align*}
+Mainly, the expected value of the posterior $[Y(\vec{s}) | Z(\vec{s_0}),\sigma_r^2, \tau]$ and the variance, the diagonal of $\Sigma$, will be used to assess the posterior model. \\
+However, in this derivation of our distribution, the underlying parameters for the covariance of the process model are not part of the actual distribution of interest, $[Y(\vec{s}) | Z(\vec{s_0})]$. We may derive this final distribution by using a combination of conditional probability and integration over the domain of the prior parameters:
+\begin{align*}
+[Y(\vec{s}) | Z(\vec{s_0})] &= \int \int [Y(\vec{s}), \sigma_r^2, \tau | Z(\vec{s_0})] \ d\sigma_r^2 \ d\tau \\
+&= \int \int [Y(\vec{s})| Z(\vec{s_0}), \sigma_r^2, \tau] \cdot [\sigma_r^2, \tau | Z(\vec{s_0})] \ d\sigma_r^2 \ d\tau
+\end{align*}
+As we don't know the posterior distribution for the parameters $\sigma_r^2, \tau$, we use Bayes Theorem combined with proportionality to evaluate it in integral \ref{Integralet}, i.e.
+\begin{align*}
+[\sigma_r^2, \tau | Z(\vec{s_0})] \cdot [Z(\vec{s_0})] &= [Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2, \tau] \\
+\implies [\sigma_r^2, \tau | Z(\vec{s_0})] &\propto [Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2, \tau]
+\end{align*}
+As $[\sigma_r^2, \tau]$ is an assigned prior, we have given the priors $\sigma_r^2$ and $\tau$ independence with respect to each other. In addition, we need to scale the distribution to one for it to be a proper pdf. Combining this with a discretization of the priors, we get:
+\begin{align*}
+[\sigma_r^2, \tau | Z(\vec{s_0})] &= \frac{[Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2]\cdot [\tau]} {\int [Z(\vec{s_0}) | \sigma_r^2, \tau] \cdot [\sigma_r^2]\cdot [\tau] }
+\end{align*}
+
+\subsection{Case main}
+\begin{itemize}
+\item sampling pattern,  relation to case motivation
+\end{itemize}
+\subsection{Case discussion}
+\begin{itemize}
+\item model
+\item motivation
+\item results
+\item critique
+\end{itemize}
+\secection{Case code}
+
+\section{Plan}
+\begin{itemize}
+\item Skrive ned prosessmodel og påfølgende fordelinger på en fornuftig og oversiktlig måte
+\item Skrive om korrelasjonsfunksjoner og hvilken som er brukt her 
+\item Bevis for at to gaussiske fordelinger gir en ny gaussisk fordeling ved kondisjonell fordeling
+\end{itemize}
+\fi

@@ -29,7 +29,6 @@ xyz.to.grid <- function(map){
   sorted_mapy = sort(unique(map$y))
   for (i in 1:nrows){
     for (j in 1:ncolumns){
-      #cat('(',i,',',j,')\n')
       grid[i,j] = map$z[intersect(which(map$x == sorted_mapx[i]), which(map$y == sorted_mapy[j]))]
     }
   }

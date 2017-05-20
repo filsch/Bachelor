@@ -16,24 +16,31 @@ sail_lines = list(run1 = data.frame(x = tempdata$x[sail_lines$V1], y = tempdata$
                   run8 = data.frame(x = tempdata$x[sail_lines$V8], y = tempdata$y[sail_lines$V8]))
 tempdata = data.frame(x = c(1, tempdata$x), y = c(1, tempdata$y), z = c(5.513, tempdata$z))
 
-new_tempdata = xyz.to.grid(tempdata)
-for (i in 1:8){
-  #i = attr(sail_lines,"names")[i]
-  runs = new_tempdata*0
-  runs[cbind(sail_lines[[i]]$x,sail_lines[[i]]$y)] = runs[cbind(sail_lines[[i]]$x,sail_lines[[i]]$y)] + 1
-}
+#new_tempdata = xyz.to.grid(tempdata)
+#for (i in 1:8){
+#  #i = attr(sail_lines,"names")[i]
+#  runs = new_tempdata*0
+#  runs[cbind(sail_lines[[i]]$x,sail_lines[[i]]$y)] = runs[cbind(sail_lines[[i]]$x,sail_lines[[i]]$y)] + 1
+#}
 
 #Setting initial parameters
-nx = 10; ny = 10; trend = 'quadratic'; total_grid_size = 100
+nx = 10; ny = 10; trend = 'simple'; intercept = TRUE; total_grid_size = 100
 
 #Constructing grid for prediction
 prediction_grid = reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")  
-prediction_xyz = grid.to.xyz(prediction_grid)
+prediction_xyz = grid.to.xyz(t(prediction_grid)); 
+prediction_xyz$y = rev(prediction_xyz$y)
+
+satelite_xyz = grid.to.xyz(t(reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")))
+satelite_xyz$y = rev(satelite_xyz$y)
+
 original_grid = xyz.to.grid(map=tempdata)
 original_xyz = tempdata
-posterior_distribution = list(prediction = prediction_xyz, variance = prediction_xyz)
-posterior_distribution$prediction$z = posterior_distribution$prediction$z*0
-posterior_distribution$variance$z = posterior_distribution$variance$z*0
+
+posterior_expected = list()
+posterior_variance = list()
+log_z_evaluated = numeric()
+
 
 #Adapting axes on sail_lines. Sampling as well
 sail_lines_xyz = list()
@@ -50,32 +57,39 @@ for (i in 1:8){
 #Computing variogram, assuming isotropic relation
 #Could add nuggeteffect for variations at miniscale
 
-v = variog(coords = cbind(x = prediction_xyz$x, y = prediction_xyz$y), data = prediction_xyz$z, trend = "1st") #+ rnorm(n=length(prediction_xyz$z),mean=0,sd=0.5)
+v = variog(coords = cbind(x = satelite_xyz$x, y = satelite_xyz$y), data = satelite_xyz$z, trend = "1st") #+ rnorm(n=length(prediction_xyz$z),mean=0,sd=0.5)
 plot(v, type="b", main = "Variogram for satelite data")
 
 vfit = variofit(v, ini.cov.pars = c(mean(v$v),10), cov.model = "exponential", weights = "cressie", fix.nugget = TRUE)
 #Denne trenger en matrise p?? ini, s?? den f??r valgt den som er best. Hvorfor har initialbetingelsene s?? mye ?? si?
 
-sigma2_beta = vfit$cov.pars[1]/var(v$v); sigma2_alpha = sigma2_beta*vfit$cov.pars[1]; phi_lambda = 1/vfit$cov.pars[2]
+rho_beta = vfit$cov.pars[1]/var(v$v); rho_alpha = rho_beta*vfit$cov.pars[1]; tau_lambda = 1/vfit$cov.pars[2]
 
-#----
-prior_sigma2 = seq(10); prior_range = seq(10)
-prior = list(sigma2 = prior_sigma2, range = prior_range, prob = rep(1/100,100))
-#----
+#Constructing prior
+prior_rho = prior(10,"gamma",list(alpha=rho_alpha,beta=rho_beta))
+prior_tau = prior(10,"exponential",list(lambda=tau_lambda))
 
-i=1
-#for (i in 1:8){
-dimension = dim(sail_lines_xyz[[i]])[1]
-samples = sail_lines_xyz[[i]]
-formula = glmLite(trend = trend, onlyFormula = TRUE)
+prior_field = expand.grid(rho=prior_rho$values, tau=prior_tau$values)
+prior_field$prob = prior_rho$probability * prior_tau$probability
 
+#Sampling noise
+sigma2 = 1.5
+
+formula = glmLite(trend = trend, onlyFormula = TRUE, intercept = intercept)
 mf <- model.frame(formula = formula, data = prediction_xyz)
 Xpred  = model.matrix(attr(mf, "terms"), data = mf)
+p_pos = cbind(prediction_xyz$x, prediction_xyz$y)
+
+system.time(
+for (k in 1:8){
+#samples = gridSampler(nx=10,ny=10,map = prediction_grid, design="regular", noise=sigma2)
+samples =  sail_lines_xyz[[k]]
+samples$z = samples$z + rnorm(dim(samples)[1], mean = 0, sd=sqrt(sigma2))
+dimension = dim(samples)[1];
 
 mf <- model.frame(formula = formula, data = samples)
 Xobs  = model.matrix(attr(mf, "terms"), data = mf)
 
-p_pos = cbind(prediction_xyz$x, prediction_xyz$y)
 s_pos = cbind(samples$x, samples$y)
 
 p_dist = constructDistanceMatrix( p_pos, p_pos )
@@ -83,51 +97,97 @@ s_dist = constructDistanceMatrix( s_pos, s_pos )
 s_p_dist = constructDistanceMatrix( s_pos, p_pos )
 
 #Setting data that are independent of range and sigma outside the integration
-  data_noise = sampling_noise * diag(dimension)
+  data_noise = sigma2 * diag(dimension)
   #Keeping GLS estimates fixed for easing numerical integration
-  sigma2_hat = sigma2_alpha / sigma2_beta;
-  range_hat = 1/phi_lambda;
-  correlation_matrix <- correlationMatrix(corr_matrix=s_dist, range = range_hat, correlation_function = "exponential")
-  covariance_samples = sigma2_hat*correlation_matrix + data_noise
+  rho_hat = rho_alpha / rho_beta;
+  tau_hat = 1/tau_lambda;
+  correlation_matrix <- correlationMatrix(corr_matrix=s_dist, range = tau_hat, correlation_function = "exponential")
+  covariance_samples = rho_hat*correlation_matrix + data_noise
   
-  glm_object <- glmLite(trend = trend, data = samples, correlation_matrix = covariance_samples)
+  glm_object <- glmLite(trend = trend, data = samples, covariance_matrix = covariance_samples, intercept = intercept)
   covar <- glm_object$covar
   
   #Fitting the quadratic and linear forms with GLS estimates
   fitted_predictions <- Xpred%*%glm_object$coefficients;
   fitted_observed <- Xobs%*%glm_object$coefficients;
   
+  #Fitted the expectation of [z | tau, rho]
+  diff_zbeta = samples$z - fitted_observed
+  
   XpCOVtXo <- tcrossprod(Xpred %*% covar, Xobs); #tcrossprod same as X %*% W %*% t(X), but slightly faster
   XpCOVtXp <- tcrossprod(Xpred %*% covar, Xpred);
   XoCOVtXo <- tcrossprod(Xobs  %*% covar, Xobs);
   
-system.time(
-  for (range in prior_range){
+  #Obtaining joint probability, is constant
+  probability <- prior_field$prob[1]
+
+j = 0  
+  for (tau in prior_tau$values){
     #Predicting the data with glm estimates of trend
-    c_p_s <- correlationMatrix(s_p_dist, range = range, correlation_function);
-    c_p <- correlationMatrix(p_dist, range = range, correlation_function);
-    c_s <- correlationMatrix(s_dist, range = range, correlation_function);
-    
-    for (sigma2 in prior_sigma2){
-      cat('Iteration for prior pair: (',sigma2,',',range,') \n')
+    c_p_s <- correlationMatrix(s_p_dist, range = tau, correlation_function = "exponential");
+    c_p <- correlationMatrix(p_dist, range = tau, correlation_function = "exponential");
+    c_s <- correlationMatrix(s_dist, range = tau, correlation_function = "exponential");
+    for (rho in prior_rho$values){
+      j = j + 1
+      #cat('Iteration number ', j, ' for prior pair: ( Rho: ',rho,', tau: ',tau,') \n')
       
-      #Obtaining joint probability for this particular (sigma2, range)
-      probability <- 0.01#prior$prob[intersect(which(prior$sigma2 == sigma2), which(prior$range == range))]
-      
-      #Constructing the different parts of the variance matrix of the conditional multivariate normal
-      cov12 <- XpCOVtXo + c_p_s*sigma2
-      cov11 <- XpCOVtXp + c_p*sigma2
-      cov22inv <- chol2inv(chol(XoCOVtXo + c_s*sigma2 + sampling_noise)) #Inverse by Cholesky, a constant factor faster
+      #Constructing the different parts of the variance matrix of the posterior conditional multivariate normal
+      cov12 <- XpCOVtXo + c_p_s*rho
+      cov22inv <- chol2inv(chol(XoCOVtXo + c_s*rho + data_noise)) #Inverse by Cholesky, a constant factor faster
       cov12cov22inv <- cov12 %*% cov22inv   
       
-      #Fitting predictions and variance 
-      prediction <- fitted_predictions + cov12cov22inv %*% (samples - fitted_observed)
-      variance <- diag( cov11 - tcrossprod(cov12cov22inv, cov12) )
+      #Fitting posterior predictions and variance 
+      prediction <- fitted_predictions + cov12cov22inv %*% (diff_zbeta)
+      variance <- diag( XpCOVtXp + c_p*rho - tcrossprod(cov12cov22inv, cov12) )
       
-      #Summing the evaluated values
-      posterior_distribution$prediction$z <- posterior_distribution$prediction$z + temp_posterior$prediction*probability
-      posterior_distribution$variance$z <- posterior_distribution$variance$z + temp_posterior$variance*probability
+      #Constructing values for distribution of Z(s) | tau, rho, expected already fitted
+      log_z_evaluated[j] = -1/2 *(log(det(cov22inv)) + crossprod( (diff_zbeta), cov22inv%*%(diff_zbeta) ) )
+      
+      
+      #Storing the evaluated values
+      posterior_expected[[j]] <- prediction
+      posterior_variance[[j]] <- variance
+      
+      #posterior_distribution$prediction$z <- posterior_distribution$prediction$z + prediction*probability
+      #posterior_distribution$variance$z <- posterior_distribution$variance$z + variance*probability
     }
   }
-)
+ 
+expected = prediction_xyz
+expected$z = expected$z*0
+variance = prediction_xyz
+variance$z = variance$z*0
+z_evaluated = exp(log_z_evaluated)
+norm_z = sum(z_evaluated)
 
+for (i in 1:j){
+  expected$z = expected$z + posterior_expected[[i]]*z_evaluated[i]
+  variance$z = variance$z + posterior_variance[[i]]*z_evaluated[i]
+}
+expected$z = expected$z / norm_z
+variance$z = sqrt(variance$z / norm_z) #Making it standard deviation
+
+#test = prediction_grid*0
+#test[cbind(samples$x,samples$y)] = 1
+#image.plot(test)
+fitted_regression = prediction_xyz
+fitted_regression$z = fitted_regression$z*0 + fitted_predictions
+
+par(mfrow=c(1,3))
+#image.plot(samples, main="Samples", zlim=c(0,15))
+image.plot(expected, main="Expected", zlim=c(3,9))
+lines(sail_lines_xyz[[k]]$x, sail_lines_xyz[[k]]$y,col="black",lwd=2)
+#lines(sail_lines_xyz[[k+4]]$x, sail_lines_xyz[[k+4]]$y,col="black",lwd=2)
+#image.plot(fitted_regression, main="Fitted regression", zlim=c(0,15))
+#lines(samples$x,samples$y,col="black", lwd=2)
+fitted_regression$z = expected$z - fitted_regression$z
+#image.plot(fitted_regression, main="expected - fitted")
+#lines(samples$x,samples$y,col="black", lwd=2)
+
+#image.plot(prediction_xyz, main=paste("Original k =",k,sep=" "), zlim=c(3,9));
+fitted_regression$z = prediction_xyz$z - expected$z
+image.plot(fitted_regression, main="Error")
+image.plot(variance, main=paste("Std. dev. k =",k,sep=" "));
+#lines(samples$x,samples$y,col="black", lwd=2)
+}
+)

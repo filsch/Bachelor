@@ -24,15 +24,16 @@ tempdata = data.frame(x = c(1, tempdata$x), y = c(1, tempdata$y), z = c(5.513, t
 #}
 
 #Setting initial parameters
-nx = 10; ny = 10; trend = 'simple'; intercept = TRUE; total_grid_size = 100
+nx = 10; ny = 10; trend = 'linear interaction'; intercept = TRUE; total_grid_size = 50
 
 #Constructing grid for prediction
 prediction_grid = reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")  
 prediction_xyz = grid.to.xyz(t(prediction_grid)); 
 prediction_xyz$y = rev(prediction_xyz$y)
 
-satelite_xyz = grid.to.xyz(t(reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")))
-satelite_xyz$y = rev(satelite_xyz$y)
+satelite_xyz = grid.to.xyz(t(reshapeMap(map=tempdata, grid_size = 50, type="reduced")))
+satelite_xyz$y = rev(satelite_xyz$y)#*100/16
+satelite_xyz$x = satelite_xyz$x#*100/16
 
 original_grid = xyz.to.grid(map=tempdata)
 original_xyz = tempdata
@@ -48,7 +49,6 @@ sail_lines_grid = list()
 for (i in 1:8){
   sail_lines_xyz[[i]] = adaptLines(sail_lines[[i]], prediction_grid, original_grid)
   sail_lines_xyz[[i]]$z = prediction_grid[cbind(sail_lines_xyz[[i]]$x, sail_lines_xyz[[i]]$y)]
-  
   sail_lines_grid[[i]] = prediction_grid*0
   sail_lines_grid[[i]][cbind(sail_lines_xyz[[i]]$x, sail_lines_xyz[[i]]$y)] = sail_lines_grid[[i]][cbind(sail_lines_xyz[[i]]$x, sail_lines_xyz[[i]]$y)] + 1
 }
@@ -60,10 +60,14 @@ for (i in 1:8){
 v = variog(coords = cbind(x = satelite_xyz$x, y = satelite_xyz$y), data = satelite_xyz$z, trend = "1st") #+ rnorm(n=length(prediction_xyz$z),mean=0,sd=0.5)
 plot(v, type="b", main = "Variogram for satelite data")
 
-vfit = variofit(v, ini.cov.pars = c(mean(v$v),10), cov.model = "exponential", weights = "cressie", fix.nugget = TRUE)
-#Denne trenger en matrise p?? ini, s?? den f??r valgt den som er best. Hvorfor har initialbetingelsene s?? mye ?? si?
-
-rho_beta = vfit$cov.pars[1]/var(v$v); rho_alpha = rho_beta*vfit$cov.pars[1]; tau_lambda = 1/vfit$cov.pars[2]
+vfit1 = variofit(v, ini.cov.pars = c(mean(v$v),5), cov.model = "exponential", weights = "equal", fix.nugget = TRUE)
+#vfit2 = variofit(v, ini.cov.pars = c(mean(v$v),5), cov.model = "matern", kappa=3/2, weights = "cressie", fix.nugget = TRUE)
+#vfit3 = variofit(v, ini.cov.pars = c(mean(v$v),10), cov.model = "matern", kappa=5/2, weights = "cressie", fix.nugget = TRUE)
+#lines(1:70,vfit$cov.pars[1]-vfit$cov.pars[1]*matern(u=1:70,phi=vfit$cov.pars[2],kappa=1/2), col="red",lwd=2)
+#lines(1:70,vfit2$cov.pars[1]-vfit2$cov.pars[1]*matern(u=1:70,phi=vfit2$cov.pars[2],kappa=3/2), col="darkgreen",lwd=2)
+#lines(1:70,vfit3$cov.pars[1]-vfit3$cov.pars[1]*matern(u=1:70,phi=vfit3$cov.pars[2],kappa=5/2), col="skyblue",lwd=2)
+#legend(x="bottomright",c("Variogram","Expoential","Matern 3/2","Matern 5/2"), lty=c(1,1,1,1), lwd=c(1,2,2,2),col=c("black","red","darkgreen","skyblue"))
+rho_beta = vfit1$cov.pars[1]/var(v$v); rho_alpha = rho_beta*vfit1$cov.pars[1]; tau_lambda = 1/vfit1$cov.pars[2]
 
 #Constructing prior
 prior_rho = prior(10,"gamma",list(alpha=rho_alpha,beta=rho_beta))
@@ -175,8 +179,11 @@ fitted_regression$z = fitted_regression$z*0 + fitted_predictions
 
 par(mfrow=c(1,3))
 #image.plot(samples, main="Samples", zlim=c(0,15))
+
 image.plot(expected, main="Expected", zlim=c(3,9))
+
 lines(sail_lines_xyz[[k]]$x, sail_lines_xyz[[k]]$y,col="black",lwd=2)
+
 #lines(sail_lines_xyz[[k+4]]$x, sail_lines_xyz[[k+4]]$y,col="black",lwd=2)
 #image.plot(fitted_regression, main="Fitted regression", zlim=c(0,15))
 #lines(samples$x,samples$y,col="black", lwd=2)
@@ -185,9 +192,14 @@ fitted_regression$z = expected$z - fitted_regression$z
 #lines(samples$x,samples$y,col="black", lwd=2)
 
 #image.plot(prediction_xyz, main=paste("Original k =",k,sep=" "), zlim=c(3,9));
+
 fitted_regression$z = prediction_xyz$z - expected$z
+
 image.plot(fitted_regression, main="Error")
+
 image.plot(variance, main=paste("Std. dev. k =",k,sep=" "));
 #lines(samples$x,samples$y,col="black", lwd=2)
 }
 )
+
+#Sammenligne med fikserte parametere -> optimerte 

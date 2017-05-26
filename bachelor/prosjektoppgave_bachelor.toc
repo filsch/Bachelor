@@ -1,0 +1,24 @@
+\contentsline {section}{Summary}{1}
+\contentsline {section}{\numberline {1}Introduction}{2}
+\contentsline {section}{\numberline {2}Spatial Gaussian Random Fields}{3}
+\contentsline {subsection}{\numberline {2.1}Random Fields}{3}
+\contentsline {subsection}{\numberline {2.2}Covariance functions}{3}
+\contentsline {subsection}{\numberline {2.3}Gaussian processes}{5}
+\contentsline {subsection}{\numberline {2.4}Model design}{7}
+\contentsline {subsubsection}{\numberline {2.4.1}GLS}{7}
+\contentsline {subsubsection}{\numberline {2.4.2}Deriving the posterior GRF}{8}
+\contentsline {section}{\numberline {3}Spatial Design}{11}
+\contentsline {subsubsection}{\numberline {3.0.1}Introduction and case goals}{11}
+\contentsline {subsection}{\numberline {3.1}Sampling design}{11}
+\contentsline {subsubsection}{\numberline {3.1.1}Goals of analysis}{11}
+\contentsline {section}{\numberline {4}Case}{13}
+\contentsline {subsection}{\numberline {4.1}Case specification}{13}
+\contentsline {subsubsection}{\numberline {4.1.1}Input}{13}
+\contentsline {subsubsection}{\numberline {4.1.2}Modelspecification and starting point of analysis}{13}
+\contentsline {subsection}{\numberline {4.2}Analysis}{14}
+\contentsline {subsubsection}{\numberline {4.2.1}Theory}{14}
+\contentsline {subsubsection}{\numberline {4.2.2}Choosing prior-parameters}{14}
+\contentsline {subsubsection}{\numberline {4.2.3}Discretizing the prior domains}{15}
+\contentsline {section}{\numberline {5}Conclusion}{16}
+\contentsline {section}{\numberline {6}Conclusion}{16}
+\contentsline {section}{References}{17}

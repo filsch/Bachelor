@@ -1,0 +1,26 @@
+\section{Spatial Design}
+\textbf{Proactive, retroactive} 
+
+\subsubsection{Introduction and case goals} \label{subsub:goals}
+In this case I've been presented with the task of performing a predictive analysis of an attribute that may be modelled by a random field. The scenario is that there is a desire in knowing the sealevel height gradient for a specific physical location, and one would like to perform predictive analysis with the following goals in mind:
+\begin{itemize} 
+\item Perform satisfactory accurate predictions
+\item Minimize sailing needed to predict
+\end{itemize} 
+
+\subsection{Sampling design} 
+\label{sec:sampling_design}
+\textbf{Dette er noe rotete}
+In spatial prediction, the choice of which spatial locations, or spatial design, to sample data from becomes critical. In the model setting, this means defining how our matrix $F(\vec{s})$ is constructed. In order to achieve the best design, one would have to choose in cohesion with the model that is defined for the data situation and as to what criteria the model is trying to satisfy. If the overall goal is to minimize the expected variance over the whole field that is under investigation, the best option in many cases would be to sample a regular spaced grid to get measurements that cover the whole field. Some additional points placed with a random distance and placement to its neighbours in the grid would be effective for estimating parameters of the model, e.g. the nugget-effect, variance of the underlying process or range parameter. However, such measurements can be expensive and time consuming to perform, motivating the consideration of how the models spatial design is defined. \\
+
+\textbf{(Kanskje et avsnitt her for å sy de to sammen?)} \\
+
+Having performed the sampling of data and constructed the predictions, one could also evaluate ones spatial design to improve it. This can easily be done by using e.g. cross-valdation techniques, so that one may reduce or alter ones design after some criteria. A typical criteria could be to decrease the number of sampling points in the design without significant losses in the information obtained. This could obviously be valuable if the data sampling is expensive or time consuming.  
+
+\subsubsection{Goals of analysis}
+As a useful tool when performing the analysis, the goals in \ref{:goals} will need to be framed to suit how the model has been specified. By doing so, one achieves concrete criterias in which to perform the analysis of data after. The goals in \ref{:goals} can for instance be rephrased into "Minimizing the expected standard deviation of predictions on the basis of as few measurements as realistically possible", expressed in an equation as:
+\textbf{Her må noe skrives om. Å gjøre ny varians utregning vil være heavy}
+\begin{equation}
+I = \sum_{z_a} \sum_{i=1}^n \sqrt{ Var_{y_a | z_a, z} } P(z_a | z) 
+\end{equation}
+where $z$ is the original samples, $z_a$ is the possible added samples, $y_a$ denotes the underlying process of data in $z_a$ and $I$ is the total measure. There is trade-off between how many measurements one may be able to perform versus how much information that will give. One may measure this trade-off by the averaged standard deviation of predictions, meaning that we may evaluate said criteria by a cost-function if there were one associated to this analysis. 

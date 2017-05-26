@@ -1,0 +1,72 @@
+\documentclass[a4paper,11pt,titlepage]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx, wrapfig, subcaption}
+\usepackage{mathtools}
+\usepackage{url}
+\usepackage{parskip}
+\usepackage{pdfpages}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage[bottom]{footmisc}
+\setstretch{1.15}
+
+\bibliographystyle{plain}
+
+%\title{Bachelor Project}
+%\begin{titlepage}
+\title{Department of Mathematical Sciences \\
+\vspace{0.5cm}
+Bachelor Project \\
+\vspace{1cm}
+\Huge  Predictive Analysis of an Attribute Modelled by a Random Field % kanskje skrive tittel på oppgave? 
+}
+\author{\Large Filip Schjerven}
+\date{\Large \today}
+%\pagenumbering{none}
+%\end{titlepage}
+\begin{document}
+\maketitle
+
+\newpage
+\section*{Summary}
+\pagenumbering{roman}
+\newpage
+\addcontentsline{toc}{section}{Summary}
+\tableofcontents
+\listoffigures
+\pagenumbering{arabic}
+\newpage
+
+\input{introduction.tex}
+\newpage
+\input{gaussian_processes.tex}
+\newpage
+\input{spatial_design.tex}
+\newpage
+\input{case.tex}
+\newpage
+\input{conclusion.tex}
+
+\section{Conclusion}
+\textbf{Summer opp} \\
+\textbf{Alternativer - komputasjonsmessig kostbart å bruke normalfordeling} \\
+
+\newpage
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{EidsvikEtAl} Eidsvik, Jo and Mukerji, Tapan \& Bhattacharjya, Debarun (2015) \\ \emph{Value of Information in the Earth Sciences - Integrating Spatial Modeling and Decision Analysis}, \\ Cambridge University Press, 2015. 
+
+\bibitem{RasmussenEtAl} Rasmussen, C. E. \& Williams, C. K. I. \\ \emph{Gaussian Processes for Machine Learning}, \\ the MIT Press, 2006.
+
+\bibitem{DiggleEtAl}Diggle, Peter \& Lophaven, Søren \\ \emph{Bayesian Geostatistical Design}, \\ Scandinavian Journal of Statistics, volume 33 (2006): 53-64, print.
+
+\bibitem{CressieEtAl} Cressie, Noel \& Wikle, Christopher K. \\ \emph{Statistics for Spatio-Temporal Data}, \\ John Wiley \& Sons, (2011).
+
+ %Use \cite{EidsvikEtAl} to refer in the text
+
+\end{thebibliography}
+\end{document}

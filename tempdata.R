@@ -31,7 +31,7 @@ prediction_grid = reshapeMap(map=tempdata, grid_size = total_grid_size, type="re
 prediction_xyz = grid.to.xyz(t(prediction_grid)); 
 prediction_xyz$y = rev(prediction_xyz$y)
 
-satelite_xyz = grid.to.xyz(t(reshapeMap(map=tempdata, grid_size = 50, type="reduced")))
+satelite_xyz = grid.to.xyz(t(reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")))
 satelite_xyz$y = rev(satelite_xyz$y)#*100/16
 satelite_xyz$x = satelite_xyz$x#*100/16
 

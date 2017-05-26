@@ -76,3 +76,34 @@ priorField <- function(size_sigma, size_tau, sigma2_prior = "gamma", rau_prior =
   prior_field$prob = rep(1/size_range * (pgamma(upper, alpha,beta) - pgamma(lower,alpha,beta)), times = size_range)
   return(prior_field)
 }
+
+sample_1 = mvrnorm(n=1, mu=rep(10,50),Sigma=covariance_1)
+sample_2 = mvrnorm(n=1, mu=rep(10,50),Sigma=covariance_2)
+sample_3 = mvrnorm(n=1, mu=rep(10,50),Sigma=covariance_3)
+plot(x="",y="",xlim=c(0,50), ylim=c(5,17),xlab="Points", ylab="Values")
+lines(1:50,sample_1,lwd=2,col="red")
+lines(1:50,sample_2,lwd=2,col="darkgreen")
+lines(1:50,sample_3,lwd=2,col="skyblue")
+legend(x="topright",c("Exponential","Matern 3/2","Matern 5/2"), lty=c(1,1,1),col=c("red","darkgreen","skyblue"))
+
+plot(x="",y="",xlim=c(0,10), ylim=c(0,1.1),xlab="Distances", ylab="Correlation", main="Correlationfunctions, tau = 1")
+lines(1:10,matern(1:10,kappa=1/2, phi=1),lwd=2,col="red")
+lines(1:10,matern(1:10,kappa=3/2, phi=1),lwd=2,col="darkgreen")
+lines(1:10,matern(1:10,kappa=5/2, phi=1),lwd=2,col="skyblue")
+lines(1:10,rep(0.05,10),lty="dashed")
+legend(x="topright",c("Exponential","Matern 3/2","Matern 5/2","0.05 correlation"), lty=c(1,1,1,2),col=c("red","darkgreen","skyblue","black"))
+
+plot(x="",y="",xlim=c(0,30), ylim=c(0,1.1),xlab="Distances", ylab="Correlation", main="Correlationfunctions, tau = 5")
+lines(1:30,matern(1:30,kappa=1/2, phi=5),lwd=2,col="red")
+lines(1:30,matern(1:30,kappa=3/2, phi=5),lwd=2,col="darkgreen")
+lines(1:30,matern(1:30,kappa=5/2, phi=5),lwd=2,col="skyblue")
+lines(1:30,rep(0.05,30),lty="dashed")
+legend(x="topright",c("Exponential","Matern 3/2","Matern 5/2","0.05 correlation"), lty=c(1,1,1,2),col=c("red","darkgreen","skyblue","black"))
+
+plot(x="",y="",xlim=c(0,70), ylim=c(0,1.1),xlab="Distances", ylab="Correlation", main="Correlationfunctions, tau = 10")
+lines(1:70,matern(1:70,kappa=1/2, phi=10),lwd=2,col="red")
+lines(1:70,matern(1:70,kappa=3/2, phi=10),lwd=2,col="darkgreen")
+lines(1:70,matern(1:70,kappa=5/2, phi=10),lwd=2,col="skyblue")
+lines(1:70,rep(0.05,70),lty="dashed")
+legend(x="topright",c("Exponential","Matern 3/2","Matern 5/2","0.05 correlation"), lty=c(1,1,1,2),col=c("red","darkgreen","skyblue","black"))
+

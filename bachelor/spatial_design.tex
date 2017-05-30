@@ -1,26 +1,31 @@
 \section{Spatial Design}
-\textbf{Proactive, retroactive} 
-
-\subsubsection{Introduction and case goals} \label{subsub:goals}
-In this case I've been presented with the task of performing a predictive analysis of an attribute that may be modelled by a random field. The scenario is that there is a desire in knowing the sealevel height gradient for a specific physical location, and one would like to perform predictive analysis with the following goals in mind:
-\begin{itemize} 
-\item Perform satisfactory accurate predictions
-\item Minimize sailing needed to predict
-\end{itemize} 
-
 \subsection{Sampling design} 
 \label{sec:sampling_design}
-\textbf{Dette er noe rotete}
-In spatial prediction, the choice of which spatial locations, or spatial design, to sample data from becomes critical. In the model setting, this means defining how our matrix $F(\vec{s})$ is constructed. In order to achieve the best design, one would have to choose in cohesion with the model that is defined for the data situation and as to what criteria the model is trying to satisfy. If the overall goal is to minimize the expected variance over the whole field that is under investigation, the best option in many cases would be to sample a regular spaced grid to get measurements that cover the whole field. Some additional points placed with a random distance and placement to its neighbours in the grid would be effective for estimating parameters of the model, e.g. the nugget-effect, variance of the underlying process or range parameter. However, such measurements can be expensive and time consuming to perform, motivating the consideration of how the models spatial design is defined. \\
+In spatial prediction, the choice of which spatial locations, or spatial design, to sample data from becomes critical. In the model setting, this means defining how our matrix $F(\vec{s})$ mentioned in (\ref{}) is constructed. In order to achieve the best design, one would have to choose in cohesion with the model that is defined for the data situation and as to what criteria the model is trying to satisfy. 
 
-\textbf{(Kanskje et avsnitt her for å sy de to sammen?)} \\
+There are two common situations when producing sampling designs. Firstly we have the \textit{retrospective design}, where one assesses the sampling design after obtaining information about the attributes of interest. A goal in this setting might be to reduce the number of sampling locations without a significant loss in the amount or quality of information. This problem is exemplified by a want to economize measuring-stations while still achieving satisfactory measurements from the remaining locations.  
 
-Having performed the sampling of data and constructed the predictions, one could also evaluate ones spatial design to improve it. This can easily be done by using e.g. cross-valdation techniques, so that one may reduce or alter ones design after some criteria. A typical criteria could be to decrease the number of sampling points in the design without significant losses in the information obtained. This could obviously be valuable if the data sampling is expensive or time consuming.  
+The second approach is that of \textit{proactive design}. In this form, the overall goal is to design a set of sampling locations in advance of the data acquisitioning that align with some criteria set for the project. The criteria is most often set on a applicationbased setting, indicating that it doesn't exist any general solution to produce the optimal design. Typically in a predictive setting, criterias that revolve around minimizing the variance or predicitve error of a design or maximizing the entropy is common. Two examples of criterias relating to the variance are found in equations (\ref{eq:criteria_binney}) and (\ref{eq:criteria_diggle}). 
 
-\subsubsection{Goals of analysis}
-As a useful tool when performing the analysis, the goals in \ref{:goals} will need to be framed to suit how the model has been specified. By doing so, one achieves concrete criterias in which to perform the analysis of data after. The goals in \ref{:goals} can for instance be rephrased into "Minimizing the expected standard deviation of predictions on the basis of as few measurements as realistically possible", expressed in an equation as:
-\textbf{Her må noe skrives om. Å gjøre ny varians utregning vil være heavy}
-\begin{equation}
-I = \sum_{z_a} \sum_{i=1}^n \sqrt{ Var_{y_a | z_a, z} } P(z_a | z) 
+
+The setting in which this criteria was used was the desire to find the optimal path through a graph that were modelled as a random field \cite{BinneyEtAl}. The criteria was to minimize the \textit{Expected Mean Squared Error} (EMSE), that they calculated as 
+\begin{equation} \label{eq:criteria_binney}
+\text{EMSE} = \frac{1}{n} [tr(\Sigma_p) - tr(\Sigma_o)]
 \end{equation}
-where $z$ is the original samples, $z_a$ is the possible added samples, $y_a$ denotes the underlying process of data in $z_a$ and $I$ is the total measure. There is trade-off between how many measurements one may be able to perform versus how much information that will give. One may measure this trade-off by the averaged standard deviation of predictions, meaning that we may evaluate said criteria by a cost-function if there were one associated to this analysis. 
+where $\Sigma_p$ denotes the posterior covariancematrix and $\Sigma_o$ denotes the prior covariancematrix.
+
+For equation (\ref{eq:criteria_diggle}), the setting was retroactive design planning, were the ultimate goal was to remove as many measurement-locations in a random field without significant loss in measurement amount or quality \cite{DiggleEtAl}. This criteria was adhered to by minimizing the equation 
+\begin{equation} \label{eq:criteria_diggle}
+E(\vec{\nu}) = \int_A E_{Y|\theta_0} [Var(S(x)|Y)]dx
+\end{equation}
+where $S(x)$ denotes a function of the proposed reduced sampling design, $Y$ known data and $\theta_0$ the true parameter values.
+
+To adhere to the criteria that's set, the design need not be solved within the workframe as stated by the model ones uses. Diggle \& Lophaven \cite{DiggleEtAl} refers to some purely geometrical approaches that may work well for finding adequate designs. In this project a satisfiable design will be estimated on the basis of a combination of predefined design proposals, i.e. the project will use focus on proactive design. The criteria that will be used in this project is minimizing the spatially averaged standard deviation of the proposed sample design, i.e. 
+\begin{equation} \label{eq:criteria}
+I = \sum_{Z_a} \sum_{i=1}^n \sqrt{ Var (Y_i | Z_a, Z) } P(Z_a | Z) .
+\end{equation}
+where $Z_a$ denotes the proposed design, $Z$ current data that has been acquired and $Y_i$ as the latent process at the location to be predicted. 
+
+\subsection{Constructing designs in Bayesian hierarchical models}
+
+med usikkerhet så må man midle over parameterene for begge fordelingene, både varians. -> pseudokode

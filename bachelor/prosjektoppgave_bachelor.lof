@@ -1,9 +1,12 @@
-\contentsline {figure}{\numberline {1}{\ignorespaces Correlation with $\tau = 10$ as function of distance.\relax }}{5}
-\contentsline {figure}{\numberline {2}{\ignorespaces Sample path from model (2.4\hbox {}), $\sigma = 10$, $\phi = 10$.\relax }}{5}
-\contentsline {figure}{\numberline {3}{\ignorespaces Original termperaturedata\relax }}{6}
-\contentsline {figure}{\numberline {4}{\ignorespaces The original data interpolated to a reduced grid for use in prediction\relax }}{6}
-\contentsline {figure}{\numberline {5}{\ignorespaces Original termperaturedata\relax }}{8}
-\contentsline {figure}{\numberline {6}{\ignorespaces The original data interpolated to a reduced grid for use in prediction\relax }}{8}
-\contentsline {figure}{\numberline {7}{\ignorespaces Fitted prior distribution for $\tau $.\relax }}{16}
-\contentsline {figure}{\numberline {8}{\ignorespaces Fitted prior distribution for $\sigma ^2$\relax }}{16}
-\contentsline {figure}{\numberline {9}{\ignorespaces Variogram with adapted correlationfunctions.\relax }}{17}
+\contentsline {figure}{\numberline {1}{\ignorespaces Correlation with $\tau = 5$ as function of distance.\relax }}{7}
+\contentsline {figure}{\numberline {2}{\ignorespaces Sample paths from a 1D-GRF, mean $\mu = 10$, variance $\sigma ^2 = 10$ and range $\phi = 5$.\relax }}{7}
+\contentsline {figure}{\numberline {3}{\ignorespaces Predictions with an Exponential covariancefunction\relax }}{9}
+\contentsline {figure}{\numberline {4}{\ignorespaces Predictions with Matern covariancefunction, d.o.f. $\nu = \frac {3}{2}$\relax }}{9}
+\contentsline {figure}{\numberline {5}{\ignorespaces Predictions with Matern covariancefunction, d.o.f. $\nu = \frac {5}{2}$\relax }}{9}
+\contentsline {figure}{\numberline {6}{\ignorespaces GLS fit by perfect data from the black line. Linear model with interaction.\relax }}{12}
+\contentsline {figure}{\numberline {7}{\ignorespaces GLS fit by perfect data from the black line. Quadratic model with interaction.\relax }}{12}
+\contentsline {figure}{\numberline {8}{\ignorespaces Variogram given as input to the case.\relax }}{18}
+\contentsline {figure}{\numberline {9}{\ignorespaces Actual data that are to be predicted on a reduced grid from the original.\relax }}{18}
+\contentsline {figure}{\numberline {10}{\ignorespaces Fitted prior distribution for $\tau $.\relax }}{18}
+\contentsline {figure}{\numberline {11}{\ignorespaces Fitted prior distribution for $\sigma ^2$\relax }}{18}
+\contentsline {figure}{\numberline {12}{\ignorespaces Sampling designs used to produce results.\relax }}{24}

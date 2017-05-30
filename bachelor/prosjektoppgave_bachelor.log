@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  27 MAY 2017 00:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  30 MAY 2017 22:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -641,29 +641,7 @@ Package footmisc Info: Declaring symbol style lamport* on input line 903.
 Package footmisc Info: Declaring symbol style lamport*-robust on input line 924
 .
 )
-(./prosjektoppgave_bachelor.aux
-
-LaTeX Warning: Label `fig:data_original' multiply defined.
-
-
-LaTeX Warning: Label `fig:data_original_reduced' multiply defined.
-
-
-LaTeX Warning: Label `fig:data_original' multiply defined.
-
-
-LaTeX Warning: Label `fig:data_original_reduced' multiply defined.
-
-
-LaTeX Warning: Label `fig:data_original' multiply defined.
-
-
-LaTeX Warning: Label `fig:data_original_reduced' multiply defined.
-
-
-LaTeX Warning: Label `fig:data_original' multiply defined.
-
-)
+(./prosjektoppgave_bachelor.aux)
 \openout1 = `prosjektoppgave_bachelor.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
@@ -788,299 +766,169 @@ Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
 \tf@toc=\write3
 \openout3 = `prosjektoppgave_bachelor.toc'.
 
- (./prosjektoppgave_bachelor.lof)
+ [1] (./prosjektoppgave_bachelor.lof)
 \tf@lof=\write4
 \openout4 = `prosjektoppgave_bachelor.lof'.
 
- [1]
-(./introduction.tex) [2] (./gaussian_processes.tex
-Underfull \hbox (badness 10000) in paragraph at lines 22--24
+ [2]
+(./introduction.tex [3]) [4] (./gaussian_processes.tex [5]
+<figurer/correlation_tau5.png, id=47, 602.25pt x 501.875pt>
+File: figurer/correlation_tau5.png Graphic file (type png)
 
+<use figurer/correlation_tau5.png>
+Package pdftex.def Info: figurer/correlation_tau5.png used on input line 55.
+(pdftex.def)             Requested size: 364.19667pt x 303.50894pt.
+
+<figurer/sample_paths_1d.png, id=49, 602.25pt x 501.875pt>
+File: figurer/sample_paths_1d.png Graphic file (type png)
+
+<use figurer/sample_paths_1d.png>
+Package pdftex.def Info: figurer/sample_paths_1d.png used on input line 61.
+(pdftex.def)             Requested size: 364.19667pt x 303.50894pt.
+ [6] [7 <./figurer/correlation_tau5.png> <./figurer/sample_paths_1d.png>]
+<figurer/prediction_exp5.png, id=59, 652.4375pt x 546.04pt>
+File: figurer/prediction_exp5.png Graphic file (type png)
+
+<use figurer/prediction_exp5.png>
+Package pdftex.def Info: figurer/prediction_exp5.png used on input line 90.
+(pdftex.def)             Requested size: 305.91995pt x 256.03894pt.
+
+Overfull \hbox (87.40474pt too wide) in paragraph at lines 90--91
+[][] 
  []
 
+<figurer/prediction_325.png, id=60, 652.4375pt x 546.04pt>
+File: figurer/prediction_325.png Graphic file (type png)
 
-Underfull \hbox (badness 10000) in paragraph at lines 25--26
+<use figurer/prediction_325.png>
+Package pdftex.def Info: figurer/prediction_325.png used on input line 95.
+(pdftex.def)             Requested size: 305.91995pt x 256.03894pt.
 
+Overfull \hbox (87.40474pt too wide) in paragraph at lines 95--96
+[][] 
  []
 
-[3] <figurer/correlation_tau10.png, id=40, 602.25pt x 506.89375pt>
-File: figurer/correlation_tau10.png Graphic file (type png)
+<figurer/prediction_525.png, id=61, 652.4375pt x 546.04pt>
+File: figurer/prediction_525.png Graphic file (type png)
 
-<use figurer/correlation_tau10.png>
-Package pdftex.def Info: figurer/correlation_tau10.png used on input line 60.
-(pdftex.def)             Requested size: 281.1175pt x 236.61583pt.
+<use figurer/prediction_525.png>
+Package pdftex.def Info: figurer/prediction_525.png used on input line 103.
+(pdftex.def)             Requested size: 364.19667pt x 304.81381pt.
+ [8] [9 <./figurer/prediction_exp5.png> <./figurer/prediction_325.png> <./figur
+er/prediction_525.png>] [10]
+<figurer/gls_simple.png, id=74, 880.28876pt x 542.025pt>
+File: figurer/gls_simple.png Graphic file (type png)
 
-Overfull \hbox (64.87376pt too wide) in paragraph at lines 60--62
- [][] 
- []
+<use figurer/gls_simple.png>
+Package pdftex.def Info: figurer/gls_simple.png used on input line 128.
+(pdftex.def)             Requested size: 455.24411pt x 280.30801pt.
 
-<figurer/sample_path-sigma10phi10.png, id=42, 655.44875pt x 506.89375pt>
-File: figurer/sample_path-sigma10phi10.png Graphic file (type png)
+<figurer/gls_quadratic.png, id=75, 880.28876pt x 542.025pt>
+File: figurer/gls_quadratic.png Graphic file (type png)
 
-<use figurer/sample_path-sigma10phi10.png>
-Package pdftex.def Info: figurer/sample_path-sigma10phi10.png used on input lin
-e 67.
-(pdftex.def)             Requested size: 281.1175pt x 217.40317pt.
-
-Overfull \hbox (64.87376pt too wide) in paragraph at lines 67--69
- [][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--78
-
- []
-
-[4]
-Underfull \hbox (badness 10000) in paragraph at lines 79--80
-
- []
-
-[5 <./figurer/correlation_tau10.png> <./figurer/sample_path-sigma10phi10.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 91--94
-
- []
-
-<figurer/original.png, id=53, 605.26125pt x 506.89375pt>
-File: figurer/original.png Graphic file (type png)
-
-<use figurer/original.png>
-Package pdftex.def Info: figurer/original.png used on input line 103.
-(pdftex.def)             Requested size: 270.30466pt x 226.37527pt.
-
-Overfull \hbox (54.06093pt too wide) in paragraph at lines 103--104
- [][] 
- []
-
-<figurer/original_reduced.png, id=54, 605.26125pt x 506.89375pt>
-File: figurer/original_reduced.png Graphic file (type png)
-
-<use figurer/original_reduced.png>
-Package pdftex.def Info: figurer/original_reduced.png used on input line 109.
-(pdftex.def)             Requested size: 260.40167pt x 218.08382pt.
-
-Overfull \hbox (60.09315pt too wide) in paragraph at lines 109--110
- [][] 
- []
-
-[6 <./figurer/original.png> <./figurer/original_reduced.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 119.
+<use figurer/gls_quadratic.png>
+Package pdftex.def Info: figurer/gls_quadratic.png used on input line 134.
+(pdftex.def)             Requested size: 455.24411pt x 280.30801pt.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 145.
 
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 119.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 145.
+ [11] [12 <./figurer/gls_simple.png> <./figurer/gls_quadratic.png>] [13]) [14]
+(./spatial_design.tex
 
+LaTeX Warning: Reference `' on page 15 undefined on input line 4.
 
-LaTeX Warning: Reference `fig:sample_paths' on page 7 undefined on input line 1
-24.
-
-
-LaTeX Warning: Reference `fig:sample_paths' on page 7 undefined on input line 1
-29.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 129--130
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 141--142
-
- []
-
-
-LaTeX Warning: Reference `fig:predictions_polynomials' on page 7 undefined on i
-nput line 143.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
-
- []
-
-[7] <figurer/prediction_325.png, id=64, 652.4375pt x 546.04pt>
-File: figurer/prediction_325.png Graphic file (type png)
-
-<use figurer/prediction_325.png>
-Package pdftex.def Info: figurer/prediction_325.png used on input line 156.
-(pdftex.def)             Requested size: 270.30466pt x 226.22743pt.
-
-Overfull \hbox (54.06093pt too wide) in paragraph at lines 156--157
- [][] 
- []
-
-File: figurer/original_reduced.png Graphic file (type png)
-<use figurer/original_reduced.png>
-Package pdftex.def Info: figurer/original_reduced.png used on input line 162.
-(pdftex.def)             Requested size: 260.40167pt x 218.08382pt.
-
-Overfull \hbox (60.09315pt too wide) in paragraph at lines 162--163
- [][] 
- []
-
-[8 <./figurer/prediction_325.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 195--197
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 198--199
-
- []
-
-
-Overfull \hbox (10.44466pt too wide) in paragraph at lines 207--207
-[] 
- []
-
-[9]
-LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 219.
-) [10] (./spatial_design.tex
-Underfull \hbox (badness 10000) in paragraph at lines 13--15
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 16--17
-
- []
-
-
-LaTeX Warning: Reference `:goals' on page 11 undefined on input line 21.
-
-
-LaTeX Warning: Reference `:goals' on page 11 undefined on input line 21.
-
-[11]) [12] (./case.tex
-Underfull \hbox (badness 10000) in paragraph at lines 2--3
-
- []
-
-
-LaTeX Warning: Reference `fig:variogram' on page 13 undefined on input line 6.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 6--7
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 8--9
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 14--16
-
- []
-
-[13]
-Underfull \hbox (badness 10000) in paragraph at lines 20--22
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 24--25
-
- []
-
-
-LaTeX Warning: Reference `:covariance_functions' on page 14 undefined on input 
-line 27.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 27--28
-
- []
-
-
-LaTeX Warning: Reference `fiq:variogram_covariance' on page 14 undefined on inp
-ut line 43.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 43--44
-
- []
-
-[14]
-
-LaTeX Warning: Reference `fig:priors' on page 15 undefined on input line 57.
-
-
-LaTeX Warning: Reference `fig:prior_grid' on page 15 undefined on input line 62
-.
-
-<figurer/fitted_exponential.png, id=89, 501.875pt x 401.5pt>
-File: figurer/fitted_exponential.png Graphic file (type png)
-
-<use figurer/fitted_exponential.png>
-Package pdftex.def Info: figurer/fitted_exponential.png used on input line 68.
-(pdftex.def)             Requested size: 281.1175pt x 224.90585pt.
-
-Overfull \hbox (64.87376pt too wide) in paragraph at lines 68--70
- [][] 
- []
-
-<figurer/fitted_gamma.png, id=90, 501.875pt x 401.5pt>
-File: figurer/fitted_gamma.png Graphic file (type png)
-
-<use figurer/fitted_gamma.png>
-Package pdftex.def Info: figurer/fitted_gamma.png used on input line 75.
-(pdftex.def)             Requested size: 281.1175pt x 224.90585pt.
-
-Overfull \hbox (64.87376pt too wide) in paragraph at lines 75--77
- [][] 
- []
-
-<figurer/variogram_covariancefunctions.png, id=91, 655.44875pt x 506.89375pt>
+[15]) [16] (./case.tex
+<figurer/variogram_covariancefunctions.png, id=98, 655.44875pt x 506.89375pt>
 File: figurer/variogram_covariancefunctions.png Graphic file (type png)
 
 <use figurer/variogram_covariancefunctions.png>
 Package pdftex.def Info: figurer/variogram_covariancefunctions.png used on inpu
-t line 83.
-(pdftex.def)             Requested size: 591.81873pt x 457.6852pt.
+t line 16.
+(pdftex.def)             Requested size: 286.80058pt x 221.7964pt.
 
-Overfull \hbox (88.99623pt too wide) in paragraph at lines 82--85
-[]  []
+Overfull \hbox (81.94212pt too wide) in paragraph at lines 16--17
+[][] 
  []
 
-)
-Underfull \hbox (badness 10000) in paragraph at lines 90--50
+<figurer/original_reduced.png, id=99, 605.26125pt x 506.89375pt>
+File: figurer/original_reduced.png Graphic file (type png)
+
+<use figurer/original_reduced.png>
+Package pdftex.def Info: figurer/original_reduced.png used on input line 21.
+(pdftex.def)             Requested size: 286.80058pt x 240.18921pt.
+
+Overfull \hbox (81.94212pt too wide) in paragraph at lines 21--23
+[][]
+ []
+
+<figurer/fitted_exponential.png, id=100, 501.875pt x 401.5pt>
+File: figurer/fitted_exponential.png Graphic file (type png)
+
+<use figurer/fitted_exponential.png>
+Package pdftex.def Info: figurer/fitted_exponential.png used on input line 29.
+(pdftex.def)             Requested size: 227.62206pt x 182.10077pt.
+
+<figurer/fitted_gamma.png, id=101, 501.875pt x 401.5pt>
+File: figurer/fitted_gamma.png Graphic file (type png)
+
+<use figurer/fitted_gamma.png>
+Package pdftex.def Info: figurer/fitted_gamma.png used on input line 34.
+(pdftex.def)             Requested size: 227.62206pt x 182.10077pt.
+ [17] [18 <./figurer/variogram_covariancefunctions.png> <./figurer/original_red
+uced.png> <./figurer/fitted_exponential.png> <./figurer/fitted_gamma.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 58--60
 
  []
 
-[15] (./conclusion.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 3--52
+[19]
+
+LaTeX Warning: Reference `' on page 20 undefined on input line 100.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 100--102
 
  []
 
+[20]
+Overfull \hbox (51.29665pt too wide) in paragraph at lines 103--117
+[]  [] 
+ []
 
-Underfull \hbox (badness 10000) in paragraph at lines 54--56
+<figurer/design_lines.png, id=119, 1014.79124pt x 501.875pt>
+File: figurer/design_lines.png Graphic file (type png)
+
+<use figurer/design_lines.png>
+Package pdftex.def Info: figurer/design_lines.png used on input line 120.
+(pdftex.def)             Requested size: 569.05513pt x 281.43863pt.
+
+Overfull \hbox (61.23264pt too wide) in paragraph at lines 119--121
+[]  [] 
+ []
+
+) [21] (./conclusion.tex)
+Underfull \hbox (badness 10000) in paragraph at lines 3--56
 
  []
 
-[16 <./figurer/fitted_exponential.png> <./figurer/fitted_gamma.png>] [17 <./fig
-urer/variogram_covariancefunctions.png>] [18] (./prosjektoppgave_bachelor.aux)
+[22] [23] [24 <./figurer/design_lines.png>] (./prosjektoppgave_bachelor.aux)
 
 LaTeX Warning: There were undefined references.
 
-
-LaTeX Warning: There were multiply-defined labels.
-
  ) 
 Here is how much of TeX's memory you used:
- 6482 strings out of 493014
- 95711 string characters out of 6133352
- 203510 words of memory out of 5000000
- 9857 multiletter control sequences out of 15000+600000
- 21454 words of font info for 53 fonts, out of 8000000 for 9000
+ 6511 strings out of 493014
+ 96360 string characters out of 6133352
+ 195595 words of memory out of 5000000
+ 9883 multiletter control sequences out of 15000+600000
+ 21199 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 42i,19n,40p,1358b,366s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 42i,19n,40p,1251b,336s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
-</usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pfb>
 </usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><
 /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></
 usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></u
@@ -1105,10 +953,10 @@ ts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2016/texmf-dist/fonts
 /type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
 ype1/public/cm-super/sfrm2488.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
 e1/public/cm-super/sfti1095.pfb>
-Output written on prosjektoppgave_bachelor.pdf (20 pages, 559236 bytes).
+Output written on prosjektoppgave_bachelor.pdf (26 pages, 701295 bytes).
 PDF statistics:
- 188 PDF objects out of 1000 (max. 8388607)
- 123 compressed objects within 2 object streams
+ 211 PDF objects out of 1000 (max. 8388607)
+ 133 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

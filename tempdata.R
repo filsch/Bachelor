@@ -24,16 +24,19 @@ tempdata = data.frame(x = c(1, tempdata$x), y = c(1, tempdata$y), z = c(5.513, t
 #}
 
 #Setting initial parameters
-nx = 10; ny = 10; trend = 'linear interaction'; intercept = TRUE; total_grid_size = 50
+nx = 10; ny = 10; trend = 'linear interaction'; intercept = TRUE; total_grid_size = 50;
+covariance_function = "matern"; n_tau=10; n_rho=10; sigma2 = 0.64; dof=5/2;
 
 #Constructing grid for prediction
 prediction_grid = reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")  
 prediction_xyz = grid.to.xyz(t(prediction_grid)); 
 prediction_xyz$y = rev(prediction_xyz$y)
+prediction_xyz$x = prediction_xyz$x + 1
+prediction_xyz$y = prediction_xyz$y + 1
 
 satelite_xyz = grid.to.xyz(t(reshapeMap(map=tempdata, grid_size = total_grid_size, type="reduced")))
-satelite_xyz$y = rev(satelite_xyz$y)#*100/16
-satelite_xyz$x = satelite_xyz$x#*100/16
+satelite_xyz$y = rev(satelite_xyz$y)
+satelite_xyz$x = satelite_xyz$x
 
 original_grid = xyz.to.grid(map=tempdata)
 original_xyz = tempdata
@@ -53,20 +56,13 @@ for (i in 1:8){
   sail_lines_grid[[i]][cbind(sail_lines_xyz[[i]]$x, sail_lines_xyz[[i]]$y)] = sail_lines_grid[[i]][cbind(sail_lines_xyz[[i]]$x, sail_lines_xyz[[i]]$y)] + 1
 }
 
-#Sampling some initial data. Gj??re satelitt dataene over hele eller bare p?? punkter? Her hele.
 #Computing variogram, assuming isotropic relation
 #Could add nuggeteffect for variations at miniscale
 
-v = variog(coords = cbind(x = satelite_xyz$x, y = satelite_xyz$y), data = satelite_xyz$z, trend = "1st") #+ rnorm(n=length(prediction_xyz$z),mean=0,sd=0.5)
+v = variog(coords = cbind(x = prediction_xyz$x, y = prediction_xyz$y), data = prediction_xyz$z, trend = "1st") #+ rnorm(n=length(prediction_xyz$z),mean=0,sd=0.5)
 plot(v, type="b", main = "Variogram for satelite data")
 
-vfit1 = variofit(v, ini.cov.pars = c(mean(v$v),5), cov.model = "exponential", weights = "equal", fix.nugget = TRUE)
-#vfit2 = variofit(v, ini.cov.pars = c(mean(v$v),5), cov.model = "matern", kappa=3/2, weights = "cressie", fix.nugget = TRUE)
-#vfit3 = variofit(v, ini.cov.pars = c(mean(v$v),10), cov.model = "matern", kappa=5/2, weights = "cressie", fix.nugget = TRUE)
-#lines(1:70,vfit$cov.pars[1]-vfit$cov.pars[1]*matern(u=1:70,phi=vfit$cov.pars[2],kappa=1/2), col="red",lwd=2)
-#lines(1:70,vfit2$cov.pars[1]-vfit2$cov.pars[1]*matern(u=1:70,phi=vfit2$cov.pars[2],kappa=3/2), col="darkgreen",lwd=2)
-#lines(1:70,vfit3$cov.pars[1]-vfit3$cov.pars[1]*matern(u=1:70,phi=vfit3$cov.pars[2],kappa=5/2), col="skyblue",lwd=2)
-#legend(x="bottomright",c("Variogram","Expoential","Matern 3/2","Matern 5/2"), lty=c(1,1,1,1), lwd=c(1,2,2,2),col=c("black","red","darkgreen","skyblue"))
+vfit1 = variofit(v, ini.cov.pars = c(mean(v$v),1), cov.model = "matern", weights = "equal", fix.nugget = TRUE, kappa = dof)
 rho_beta = vfit1$cov.pars[1]/var(v$v); rho_alpha = rho_beta*vfit1$cov.pars[1]; tau_lambda = 1/vfit1$cov.pars[2]
 
 #Constructing prior
@@ -76,130 +72,124 @@ prior_tau = prior(10,"exponential",list(lambda=tau_lambda))
 prior_field = expand.grid(rho=prior_rho$values, tau=prior_tau$values)
 prior_field$prob = prior_rho$probability * prior_tau$probability
 
-#Sampling noise
-sigma2 = 1.5
-
-formula = glmLite(trend = trend, onlyFormula = TRUE, intercept = intercept)
-mf <- model.frame(formula = formula, data = prediction_xyz)
-Xpred  = model.matrix(attr(mf, "terms"), data = mf)
-p_pos = cbind(prediction_xyz$x, prediction_xyz$y)
-
+variance=data.frame("Design 1"=numeric(8),"Design 2"=numeric(8),
+                    "Design 3"=numeric(8),"Design 4"=numeric(8),
+                    "Design 5"=numeric(8),"Design 6"=numeric(8),
+                    "Design 7"=numeric(8),"Design 8"=numeric(8))
+samples_frame = list()
 system.time(
-for (k in 1:8){
-#samples = gridSampler(nx=10,ny=10,map = prediction_grid, design="regular", noise=sigma2)
-samples =  sail_lines_xyz[[k]]
-samples$z = samples$z + rnorm(dim(samples)[1], mean = 0, sd=sqrt(sigma2))
-dimension = dim(samples)[1];
-
-mf <- model.frame(formula = formula, data = samples)
-Xobs  = model.matrix(attr(mf, "terms"), data = mf)
-
-s_pos = cbind(samples$x, samples$y)
-
-p_dist = constructDistanceMatrix( p_pos, p_pos )
-s_dist = constructDistanceMatrix( s_pos, s_pos )
-s_p_dist = constructDistanceMatrix( s_pos, p_pos )
-
-#Setting data that are independent of range and sigma outside the integration
-  data_noise = sigma2 * diag(dimension)
-  #Keeping GLS estimates fixed for easing numerical integration
-  rho_hat = rho_alpha / rho_beta;
-  tau_hat = 1/tau_lambda;
-  correlation_matrix <- correlationMatrix(corr_matrix=s_dist, range = tau_hat, correlation_function = "exponential")
-  covariance_samples = rho_hat*correlation_matrix + data_noise
+for(k in 1:7){
+  samples =  sail_lines_xyz[[k]]
+  samples$z = samples$z + rnorm(dim(samples)[1], mean = 0, sd=sqrt(sigma2))
+  samples_frame[[k]] = samples$z
+  results = posteriorDistributionIntegration(samples=samples, correlation_function = covariance_function, rho_alpha=rho_alpha,
+                                             rho_beta=rho_beta, tau_lambda=tau_lambda,
+                                             sampling_noise=sigma2, prediction_xyz=prediction_xyz, prior_tau=prior_tau, 
+                                             prior_rho=prior_rho,trend=trend,intercept=intercept, dof=dof)
+  #par(mfrow=c(1,3))
+  #image.plot(results$expected, main=paste("Expected, design ",k))
+  #points(samples$x, samples$y,col="black",lwd=2,pch="x")
+  #test = prediction_xyz
+  #test$z = results$expected$z - prediction_xyz$z
+  #image.plot(results$sd, main=paste("Std. dev. design ",k))
+  #image.plot(test, main=paste("Residuals, design ",k))
   
-  glm_object <- glmLite(trend = trend, data = samples, covariance_matrix = covariance_samples, intercept = intercept)
-  covar <- glm_object$covar
+  sum_posterior = 0
+  posterior = 0
+    for (i in ((1:8)[1:8 != k])){
+      added_design = sail_lines_xyz[[i]];
+      sum_posterior = 0
+      
+      total = rbind(samples,added_design)
+      total$z <- NULL
+      total = total[!duplicated(total),]
+      added_design = total[(dim(samples)[1] + 1):dim(total)[1],]
+      std=0
+      indexes = numeric(0)
+      for (j in 1:dim(added_design)[1]){
+        ind = which(results$expected$x==added_design$x[j])
+        new = ind[which(results$expected$y[results$expected$x==added_design$x[j]] == added_design$y[j])]
+        indexes=c(indexes,new)
+      }
   
-  #Fitting the quadratic and linear forms with GLS estimates
-  fitted_predictions <- Xpred%*%glm_object$coefficients;
-  fitted_observed <- Xobs%*%glm_object$coefficients;
-  
-  #Fitted the expectation of [z | tau, rho]
-  diff_zbeta = samples$z - fitted_observed
-  
-  XpCOVtXo <- tcrossprod(Xpred %*% covar, Xobs); #tcrossprod same as X %*% W %*% t(X), but slightly faster
-  XpCOVtXp <- tcrossprod(Xpred %*% covar, Xpred);
-  XoCOVtXo <- tcrossprod(Xobs  %*% covar, Xobs);
-  
-  #Obtaining joint probability, is constant
-  probability <- prior_field$prob[1]
-
-j = 0  
-  for (tau in prior_tau$values){
-    #Predicting the data with glm estimates of trend
-    c_p_s <- correlationMatrix(s_p_dist, range = tau, correlation_function = "exponential");
-    c_p <- correlationMatrix(p_dist, range = tau, correlation_function = "exponential");
-    c_s <- correlationMatrix(s_dist, range = tau, correlation_function = "exponential");
-    for (rho in prior_rho$values){
-      j = j + 1
-      #cat('Iteration number ', j, ' for prior pair: ( Rho: ',rho,', tau: ',tau,') \n')
-      
-      #Constructing the different parts of the variance matrix of the posterior conditional multivariate normal
-      cov12 <- XpCOVtXo + c_p_s*rho
-      cov22inv <- chol2inv(chol(XoCOVtXo + c_s*rho + data_noise)) #Inverse by Cholesky, a constant factor faster
-      cov12cov22inv <- cov12 %*% cov22inv   
-      
-      #Fitting posterior predictions and variance 
-      prediction <- fitted_predictions + cov12cov22inv %*% (diff_zbeta)
-      variance <- diag( XpCOVtXp + c_p*rho - tcrossprod(cov12cov22inv, cov12) )
-      
-      #Constructing values for distribution of Z(s) | tau, rho, expected already fitted
-      log_z_evaluated[j] = -1/2 *(log(det(cov22inv)) + crossprod( (diff_zbeta), cov22inv%*%(diff_zbeta) ) )
-      
-      
-      #Storing the evaluated values
-      posterior_expected[[j]] <- prediction
-      posterior_variance[[j]] <- variance
-      
-      #posterior_distribution$prediction$z <- posterior_distribution$prediction$z + prediction*probability
-      #posterior_distribution$variance$z <- posterior_distribution$variance$z + variance*probability
+      mu = results$expected$z[indexes]
+      C = chol(results$covmatrix[indexes,indexes] + diag(length(indexes))*sigma2)
+      Sigma_inv = chol2inv(C)
+      det_sigma = det(Sigma_inv)
+      for (j in 1:50){
+        added_design$z = C%*%rnorm(length(indexes), mean=0, sd=1) + mu
+        proposed = rbind(samples, added_design)
+        cat(i,",",j,"\n")
+        temp = posteriorDistributionIntegration(samples=proposed, correlation_function = covariance_function, rho_alpha=rho_alpha,
+                                                rho_beta=rho_beta, tau_lambda=tau_lambda,
+                                                sampling_noise=sigma2, prediction_xyz=prediction_xyz, prior_tau=prior_tau, 
+                                                prior_rho=prior_rho,trend=trend,intercept=intercept, variance_only=TRUE, dof=dof)
+        posterior = exp(-1/2 * (log(det_sigma) + crossprod( (added_design$z - mu), Sigma_inv%*%(added_design$z - mu) ) ) ) 
+        cat("Posterior: ", posterior, " k = ",k, " i = ", i, "\n")
+        std = std + sum(temp$sd$z)*posterior
+        sum_posterior = sum_posterior + posterior
+      }
+      #image.plot(temp$sd, main=paste("Std. deviation",i))
+      #points(samples$x,samples$y,pch="x", cex=1.2, col="black")
+      #points(added_design$x,added_design$y, pch="x", cex=1, col="red")
+      variance[[k]][i] = std/(sum_posterior)
     }
-  }
- 
-expected = prediction_xyz
-expected$z = expected$z*0
-variance = prediction_xyz
-variance$z = variance$z*0
-z_evaluated = exp(log_z_evaluated)
-norm_z = sum(z_evaluated)
+})
 
-for (i in 1:j){
-  expected$z = expected$z + posterior_expected[[i]]*z_evaluated[i]
-  variance$z = variance$z + posterior_variance[[i]]*z_evaluated[i]
-}
-expected$z = expected$z / norm_z
-variance$z = sqrt(variance$z / norm_z) #Making it standard deviation
+m = 8
+new_samples = sail_lines_xyz[[m]] + rnorm(dim(sail_lines_xyz[[m]])[1], mean=0,sd=sqrt(sigma2))
+new_samples = rbind(samples,new_samples)
 
-#test = prediction_grid*0
-#test[cbind(samples$x,samples$y)] = 1
-#image.plot(test)
-fitted_regression = prediction_xyz
-fitted_regression$z = fitted_regression$z*0 + fitted_predictions
+new_results = posteriorDistributionIntegration(samples=new_samples, correlation_function = covariance_function, rho_alpha=rho_alpha,
+                                rho_beta=rho_beta, tau_lambda=tau_lambda,
+                                sampling_noise=sigma2, prediction_xyz=prediction_xyz, prior_tau=prior_tau, 
+                                prior_rho=prior_rho,trend=trend,intercept=intercept)
 
 par(mfrow=c(1,3))
-#image.plot(samples, main="Samples", zlim=c(0,15))
+image.plot(new_results$expected, main="Posterior expected")
+points(new_samples$x, new_samples$y,col="black",lwd=2,pch="x")
+residuals = new_results$expected
+residuals$z = residuals$z - prediction_xyz$z
+image.plot(residuals, main="Posterior residuals")
+image.plot(new_results$sd, main="Posterior std. dev.");
 
-image.plot(expected, main="Expected", zlim=c(3,9))
 
-lines(sail_lines_xyz[[k]]$x, sail_lines_xyz[[k]]$y,col="black",lwd=2)
+#posteriorGRF(added_design,samples, correlation_function = covariance_function, rho_alpha, rho_beta, tau_lambda,
+#             sampling_noise=sigma2,trend,intercept,prediction_grid, dof=dof)
 
-#lines(sail_lines_xyz[[k+4]]$x, sail_lines_xyz[[k+4]]$y,col="black",lwd=2)
-#image.plot(fitted_regression, main="Fitted regression", zlim=c(0,15))
 #lines(samples$x,samples$y,col="black", lwd=2)
-fitted_regression$z = expected$z - fitted_regression$z
-#image.plot(fitted_regression, main="expected - fitted")
-#lines(samples$x,samples$y,col="black", lwd=2)
 
-#image.plot(prediction_xyz, main=paste("Original k =",k,sep=" "), zlim=c(3,9));
-
-fitted_regression$z = prediction_xyz$z - expected$z
-
-image.plot(fitted_regression, main="Error")
-
-image.plot(variance, main=paste("Std. dev. k =",k,sep=" "));
-#lines(samples$x,samples$y,col="black", lwd=2)
-}
-)
-
+#fitted$z = fitted_predictions
+#variance$z = diag(Xpred%*%covar%*%t(Xpred))
+#residuals$z = fitted$z - prediction_xyz$z
 #Sammenligne med fikserte parametere -> optimerte 
+#par(mfrow=c(1,3))
+#image.plot(fitted, main="Fitted", ylab="Northing"); points(samples$x,samples$y,lwd=2); image.plot(variance, main="Variance",zlim=c(0,100));points(samples$x,samples$y,lwd=2); image.plot(residuals, main="Residuals");points(samples$x,samples$y,lwd=2);
+#par(mfrow=c(1,1),new=TRUE,mar=rep(0,4),oma=rep(0,4)) 
+#plot.window(xlim=c(0,1),ylim=c(0,1),mar=rep(0,4)) 
+#text(0.5,0.01,c("GLS fit for quadratic trend"), cex=c(1.4,1.2)) 
+a = 4
+example = prediction_xyz
+example$z = example$z*0
+par(mfrow=c(1,3))
+image.plot(example, nlevel=1, col = c("black"), breaks=c(0,0.1))
+points(sail_lines_xyz[[1]]$x,sail_lines_xyz[[1]]$y,pch="x", cex=1.2, col="red")
+points(sail_lines_xyz[[4]]$x,sail_lines_xyz[[4]]$y,pch="o", cex=1.2, col="blue")
+points(sail_lines_xyz[[7]]$x,sail_lines_xyz[[7]]$y,pch="-", cex=1.2, col="green")
+legend(x="topleft",legend=c("Design 1","Design 4", "Design 7"),
+       col=c("red","blue","green"),pch=c("x","o","-"),cex=1.2, bty="n", text.col="white")
+image.plot(example, nlevel=1, col = c("black"), breaks=c(0,0.1))
+points(sail_lines_xyz[[2]]$x,sail_lines_xyz[[2]]$y,pch="x", cex=1.2, col="skyblue")
+points(sail_lines_xyz[[5]]$x,sail_lines_xyz[[5]]$y,pch="o", cex=1.2, col="yellow")
+points(sail_lines_xyz[[8]]$x,sail_lines_xyz[[8]]$y,pch="-", cex=1.2, col="orange")
+legend(x="topright",legend=c("Design 2","Design 5", "Design 8"),
+       col=c("skyblue","yellow","orange"),pch=c("x","o","-"),cex=1.2, bty="n", text.col="white")
+image.plot(example, nlevel=1, col = c("black"), breaks=c(0,0.1))
+points(sail_lines_xyz[[3]]$x,sail_lines_xyz[[3]]$y,pch="x", cex=1.2, col="cyan")
+points(sail_lines_xyz[[6]]$x,sail_lines_xyz[[6]]$y,pch="o", cex=1.2, col="lightgreen")
+legend(x="topleft",legend=c("Design 3","Design 6"),
+       col=c("cyan","lightgreen"),pch=c("x","o"),cex=1.2, bty="n", text.col="white")
+
+
+
+

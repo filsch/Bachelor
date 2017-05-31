@@ -78,7 +78,7 @@ variance=data.frame("Design 1"=numeric(8),"Design 2"=numeric(8),
                     "Design 7"=numeric(8),"Design 8"=numeric(8))
 samples_frame = list()
 system.time(
-for(k in 1:7){
+for(k in 1:8){
   samples =  sail_lines_xyz[[k]]
   samples$z = samples$z + rnorm(dim(samples)[1], mean = 0, sd=sqrt(sigma2))
   samples_frame[[k]] = samples$z
@@ -135,24 +135,60 @@ for(k in 1:7){
       variance[[k]][i] = std/(sum_posterior)
     }
 })
+residuals_result=data.frame("Design 1"=numeric(16),"Design 2"=numeric(16),
+                            "Design 3"=numeric(16),"Design 4"=numeric(16),
+                            "Design 5"=numeric(16),"Design 6"=numeric(16),
+                            "Design 7"=numeric(16),"Design 8"=numeric(16))
+par(mfrow=c(1,3),omi=c(0.3,0.3,0.3,0.3))
+for(k in 1:8){
+  samples =  sail_lines_xyz[[k]]
+  samples$z = samples$z + rnorm(dim(samples)[1], mean = 0, sd=sqrt(sigma2))
+  samples_frame[[k]] = samples$z
+  
+  for(m in ((1:8)[1:8 != k])){
+    new_samples = sail_lines_xyz[[m]]
+    
+    total = rbind(samples,new_samples)
+    total$z <- NULL
+    total = total[!duplicated(total),]
+    new_samples = total[(dim(samples)[1] + 1):dim(total)[1],]
+    new_samples$z = prediction_grid[cbind(new_samples$x,new_samples$y)]
+    new_samples$z = new_samples$z + rnorm(dim(new_samples)[1], mean=0,sd=sqrt(sigma2))
+    new_samples = rbind(samples,new_samples)
+    new_results1 = posteriorDistributionIntegration(samples=new_samples, correlation_function = covariance_function, rho_alpha=rho_alpha,
+                                                   rho_beta=rho_beta, tau_lambda=tau_lambda,
+                                                   sampling_noise=sigma2, prediction_xyz=prediction_xyz, prior_tau=prior_tau, 
+                                                   prior_rho=prior_rho,trend=trend,intercept=intercept)
+    
+    new_results2 = posteriorDistributionIntegration(samples=new_samples, correlation_function = covariance_function, rho_alpha=rho_alpha,
+                                                    rho_beta=rho_beta, tau_lambda=tau_lambda,
+                                                    sampling_noise=sigma2, prediction_xyz=prediction_xyz, prior_tau=list(values=1/tau_lambda), 
+                                                    prior_rho=list(values=rho_alpha/rho_beta),trend=trend,intercept=intercept)
 
-m = 8
-new_samples = sail_lines_xyz[[m]] + rnorm(dim(sail_lines_xyz[[m]])[1], mean=0,sd=sqrt(sigma2))
-new_samples = rbind(samples,new_samples)
+#image.plot(results$expected, main=paste("Expected, design ",k))
+#points(samples$x, samples$y,col="black",lwd=2,pch="x")
+#test = prediction_xyz
+#test$z = results$expected$z - prediction_xyz$z
+#image.plot(results$sd, main=paste("Std., design ",k))
+#image.plot(test, main=paste("Residuals, design ",k))
 
-new_results = posteriorDistributionIntegration(samples=new_samples, correlation_function = covariance_function, rho_alpha=rho_alpha,
-                                rho_beta=rho_beta, tau_lambda=tau_lambda,
-                                sampling_noise=sigma2, prediction_xyz=prediction_xyz, prior_tau=prior_tau, 
-                                prior_rho=prior_rho,trend=trend,intercept=intercept)
 
-par(mfrow=c(1,3))
-image.plot(new_results$expected, main="Posterior expected")
+image.plot(new_results1$expected, main=paste("Expected w/prior, design ",k,"+",m))
 points(new_samples$x, new_samples$y,col="black",lwd=2,pch="x")
-residuals = new_results$expected
+residuals = new_results1$expected
 residuals$z = residuals$z - prediction_xyz$z
-image.plot(residuals, main="Posterior residuals")
-image.plot(new_results$sd, main="Posterior std. dev.");
-
+image.plot(new_results1$sd, main=paste("Std. w/prior, design ",k,"+",m))
+image.plot(residuals, main=paste("Residuals w/prior, design ",k,"+",m))
+residuals_result[[k]][2*m - 1] = sum(abs(residuals$z))
+image.plot(new_results2$expected, main=paste("Expected w/fixed, design ",k,"+",m))
+points(new_samples$x, new_samples$y,col="black",lwd=2,pch="x")
+residuals = new_results2$expected
+residuals$z = residuals$z - prediction_xyz$z
+image.plot(new_results2$sd, main=paste("Std. w/fixed, design ",k,"+",m))
+image.plot(residuals, main=paste("Residuals w/fixed, design ",k,"+",m));
+residuals_result[[k]][2*m] = sum(abs(residuals$z))
+  }
+}
 
 #posteriorGRF(added_design,samples, correlation_function = covariance_function, rho_alpha, rho_beta, tau_lambda,
 #             sampling_noise=sigma2,trend,intercept,prediction_grid, dof=dof)

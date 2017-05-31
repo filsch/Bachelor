@@ -19,5 +19,7 @@
 \contentsline {subsubsection}{\numberline {4.2.1}Choosing prior-parameters}{19}
 \contentsline {subsubsection}{\numberline {4.2.2}Discretizing the prior domains}{20}
 \contentsline {subsubsection}{\numberline {4.2.3}Results}{20}
-\contentsline {section}{\numberline {5}Conclusion}{22}
-\contentsline {section}{References}{23}
+\contentsline {subsubsection}{\numberline {4.2.4}Notes on computational cost}{24}
+\contentsline {subsection}{\numberline {4.3}Discussion}{24}
+\contentsline {section}{\numberline {5}Conclusion}{26}
+\contentsline {section}{References}{27}

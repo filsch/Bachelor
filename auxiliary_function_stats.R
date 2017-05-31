@@ -170,7 +170,7 @@ posteriorDistributionIntegration <- function(samples, correlation_function = 'ex
     covmatrix = covmatrix + (posterior_variance[[i]])*z_evaluated[i]
   }
   expected$z = expected$z / norm_z
-  variance$z = sqrt(variance$z / norm_z) #Making it standard deviation
+  variance$z = variance$z / norm_z #Making it standard deviation
   covmatrix = covmatrix / norm_z
   
   fit = prediction_xyz

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  30 MAY 2017 22:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.7.3)  31 MAY 2017 12:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -433,28 +433,88 @@ Package caption Info: wrapfig package is loaded.
 \c@subfigure=\count93
 \c@subtable=\count94
 )
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tools/tabularx.sty
+Package: tabularx 2016/02/03 v2.11 `tabularx' package (DPC)
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/tools/array.sty
+Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen122
+\extrarowheight=\dimen123
+\NC@list=\toks19
+\extratabsurround=\skip43
+\backup@length=\skip44
+)
+\TX@col@width=\dimen124
+\TX@old@table=\dimen125
+\TX@old@col=\dimen126
+\TX@target=\dimen127
+\TX@delta=\dimen128
+\TX@cols=\count95
+\TX@ftn=\toks20
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ms/ragged2e.sty
+Package: ragged2e 2009/05/21 v2.1 ragged2e Package (MS)
+
+(/usr/local/texlive/2016/texmf-dist/tex/latex/ms/everysel.sty
+Package: everysel 2011/10/28 v1.2 EverySelectfont Package (MS)
+)
+\CenteringLeftskip=\skip45
+\RaggedLeftLeftskip=\skip46
+\RaggedRightLeftskip=\skip47
+\CenteringRightskip=\skip48
+\RaggedLeftRightskip=\skip49
+\RaggedRightRightskip=\skip50
+\CenteringParfillskip=\skip51
+\RaggedLeftParfillskip=\skip52
+\RaggedRightParfillskip=\skip53
+\JustifyingParfillskip=\skip54
+\CenteringParindent=\skip55
+\RaggedLeftParindent=\skip56
+\RaggedRightParindent=\skip57
+\JustifyingParindent=\skip58
+)
+(/usr/local/texlive/2016/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2016/04/27 v1.618033 publication quality tables
+\heavyrulewidth=\dimen129
+\lightrulewidth=\dimen130
+\cmidrulewidth=\dimen131
+\belowrulesep=\dimen132
+\belowbottomsep=\dimen133
+\aboverulesep=\dimen134
+\abovetopsep=\dimen135
+\cmidrulesep=\dimen136
+\cmidrulekern=\dimen137
+\defaultaddspace=\dimen138
+\@cmidla=\count96
+\@cmidlb=\count97
+\@aboverulesep=\dimen139
+\@belowrulesep=\dimen140
+\@thisruleclass=\count98
+\@lastruleclass=\count99
+\@thisrulewidth=\dimen141
+)
 (/usr/local/texlive/2016/texmf-dist/tex/latex/mathtools/mathtools.sty
 Package: mathtools 2015/11/12 v1.18 mathematical typesetting tools
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count95
-\calc@Bcount=\count96
-\calc@Adimen=\dimen122
-\calc@Bdimen=\dimen123
-\calc@Askip=\skip43
-\calc@Bskip=\skip44
+\calc@Acount=\count100
+\calc@Bcount=\count101
+\calc@Adimen=\dimen142
+\calc@Bdimen=\dimen143
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count97
-\calc@Cskip=\skip45
+\calc@Ccount=\count102
+\calc@Cskip=\skip61
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/mathtools/mhsetup.sty
 Package: mhsetup 2010/01/21 v1.2a programming setup (MH)
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2016/03/10 v2.15b AMS math features
-\@mathmargin=\skip46
+\@mathmargin=\skip62
 
 For additional information on amsmath, use the `?' option.
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amstext.sty
@@ -462,51 +522,51 @@ Package: amstext 2000/06/29 v2.01 AMS text
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsgen.sty
 File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks19
-\ex@=\dimen124
+\@emptytoks=\toks21
+\ex@=\dimen144
 ))
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsbsy.sty
 Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen125
+\pmbraise@=\dimen145
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/amsmath/amsopn.sty
 Package: amsopn 2016/03/08 v2.02 operator names
 )
-\inf@bad=\count98
+\inf@bad=\count103
 LaTeX Info: Redefining \frac on input line 199.
-\uproot@=\count99
-\leftroot@=\count100
+\uproot@=\count104
+\leftroot@=\count105
 LaTeX Info: Redefining \overline on input line 297.
-\classnum@=\count101
-\DOTSCASE@=\count102
+\classnum@=\count106
+\DOTSCASE@=\count107
 LaTeX Info: Redefining \ldots on input line 394.
 LaTeX Info: Redefining \dots on input line 397.
 LaTeX Info: Redefining \cdots on input line 518.
 \Mathstrutbox@=\box27
 \strutbox@=\box28
-\big@size=\dimen126
+\big@size=\dimen146
 LaTeX Font Info:    Redeclaring font encoding OML on input line 634.
 LaTeX Font Info:    Redeclaring font encoding OMS on input line 635.
-\macc@depth=\count103
-\c@MaxMatrixCols=\count104
+\macc@depth=\count108
+\c@MaxMatrixCols=\count109
 \dotsspace@=\muskip10
-\c@parentequation=\count105
-\dspbrk@lvl=\count106
-\tag@help=\toks20
-\row@=\count107
-\column@=\count108
-\maxfields@=\count109
-\andhelp@=\toks21
-\eqnshift@=\dimen127
-\alignsep@=\dimen128
-\tagshift@=\dimen129
-\tagwidth@=\dimen130
-\totwidth@=\dimen131
-\lineht@=\dimen132
-\@envbody=\toks22
-\multlinegap=\skip47
-\multlinetaggap=\skip48
-\mathdisplay@stack=\toks23
+\c@parentequation=\count110
+\dspbrk@lvl=\count111
+\tag@help=\toks22
+\row@=\count112
+\column@=\count113
+\maxfields@=\count114
+\andhelp@=\toks23
+\eqnshift@=\dimen147
+\alignsep@=\dimen148
+\tagshift@=\dimen149
+\tagwidth@=\dimen150
+\totwidth@=\dimen151
+\lineht@=\dimen152
+\@envbody=\toks24
+\multlinegap=\skip63
+\multlinetaggap=\skip64
+\mathdisplay@stack=\toks25
 LaTeX Info: Redefining \[ on input line 2739.
 LaTeX Info: Redefining \] on input line 2740.
 )
@@ -514,15 +574,15 @@ LaTeX Info: Thecontrolsequence`\('isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\)'isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\['isalreadyrobust on input line 129.
 LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
-\g_MT_multlinerow_int=\count110
-\l_MT_multwidth_dim=\dimen133
-\origjot=\skip49
-\l_MT_shortvdotswithinadjustabove_dim=\dimen134
-\l_MT_shortvdotswithinadjustbelow_dim=\dimen135
-\l_MT_above_intertext_sep=\dimen136
-\l_MT_below_intertext_sep=\dimen137
-\l_MT_above_shortintertext_sep=\dimen138
-\l_MT_below_shortintertext_sep=\dimen139
+\g_MT_multlinerow_int=\count115
+\l_MT_multwidth_dim=\dimen153
+\origjot=\skip65
+\l_MT_shortvdotswithinadjustabove_dim=\dimen154
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen155
+\l_MT_above_intertext_sep=\dimen156
+\l_MT_below_intertext_sep=\dimen157
+\l_MT_above_shortintertext_sep=\dimen158
+\l_MT_below_shortintertext_sep=\dimen159
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
@@ -560,37 +620,37 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 ))
-\AM@pagewidth=\dimen140
-\AM@pageheight=\dimen141
+\AM@pagewidth=\dimen160
+\AM@pageheight=\dimen161
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/pdfpages/pppdftex.def
 File: pppdftex.def 2016/04/19 v0.5f Pdfpages driver for pdfTeX (AM)
 )
 \AM@pagebox=\box29
-\AM@global@opts=\toks24
-\AM@toc@title=\toks25
-\c@AM@survey=\count111
+\AM@global@opts=\toks26
+\AM@toc@title=\toks27
+\c@AM@survey=\count116
 \AM@templatesizebox=\box30
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/tools/multicol.sty
 Package: multicol 2016/04/07 v1.8p multicolumn formatting (FMi)
-\c@tracingmulticols=\count112
+\c@tracingmulticols=\count117
 \mult@box=\box31
-\multicol@leftmargin=\dimen142
-\c@unbalance=\count113
-\c@collectmore=\count114
-\doublecol@number=\count115
-\multicoltolerance=\count116
-\multicolpretolerance=\count117
-\full@width=\dimen143
-\page@free=\dimen144
-\premulticols=\dimen145
-\postmulticols=\dimen146
-\multicolsep=\skip50
-\multicolbaselineskip=\skip51
+\multicol@leftmargin=\dimen162
+\c@unbalance=\count118
+\c@collectmore=\count119
+\doublecol@number=\count120
+\multicoltolerance=\count121
+\multicolpretolerance=\count122
+\full@width=\dimen163
+\page@free=\dimen164
+\premulticols=\dimen165
+\postmulticols=\dimen166
+\multicolsep=\skip66
+\multicolbaselineskip=\skip67
 \partial@page=\box32
 \last@line=\box33
-\maxbalancingoverflow=\dimen147
+\maxbalancingoverflow=\dimen167
 \mult@rightbox=\box34
 \mult@grightbox=\box35
 \mult@gfirstbox=\box36
@@ -612,26 +672,26 @@ Package: multicol 2016/04/07 v1.8p multicolumn formatting (FMi)
 \@tempa=\box52
 \@tempa=\box53
 \@tempa=\box54
-\c@columnbadness=\count118
-\c@finalcolumnbadness=\count119
-\last@try=\dimen148
-\multicolovershoot=\dimen149
-\multicolundershoot=\dimen150
+\c@columnbadness=\count123
+\c@finalcolumnbadness=\count124
+\last@try=\dimen168
+\multicolovershoot=\dimen169
+\multicolundershoot=\dimen170
 \mult@nat@firstbox=\box55
 \colbreak@box=\box56
-\mc@col@check@num=\count120
+\mc@col@check@num=\count125
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/multirow/multirow.sty
-\bigstrutjot=\dimen151
+\bigstrutjot=\dimen171
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/setspace/setspace.sty
 Package: setspace 2011/12/19 v6.7a set line spacing
 )
 (/usr/local/texlive/2016/texmf-dist/tex/latex/footmisc/footmisc.sty
 Package: footmisc 2011/06/06 v5.5b a miscellany of footnote facilities
-\FN@temptoken=\toks26
-\footnotemargin=\dimen152
-\c@pp@next@reset=\count121
+\FN@temptoken=\toks28
+\footnotemargin=\dimen172
+\c@pp@next@reset=\count126
 Package footmisc Info: Declaring symbol style bringhurst on input line 855.
 Package footmisc Info: Declaring symbol style chicago on input line 863.
 Package footmisc Info: Declaring symbol style wiley on input line 872.
@@ -693,17 +753,17 @@ LaTeX Font Info:    ... okay on input line 30.
 
 (/usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count122
-\scratchdimen=\dimen153
+\scratchcounter=\count127
+\scratchdimen=\dimen173
 \scratchbox=\box57
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\everyMPshowfont=\toks27
-\MPscratchCnt=\count125
-\MPscratchDim=\dimen154
-\MPnumerator=\count126
-\makeMPintoPDFobject=\count127
-\everyMPtoPDFconversion=\toks28
+\nofMPsegments=\count128
+\nofMParguments=\count129
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count130
+\MPscratchDim=\dimen174
+\MPnumerator=\count131
+\makeMPintoPDFobject=\count132
+\everyMPtoPDFconversion=\toks30
 ) (/usr/local/texlive/2016/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2016/05/10 v0.21 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -750,6 +810,9 @@ e
 ))
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
+
+ABD: EverySelectfont initializing macros
+LaTeX Info: Redefining \selectfont on input line 30.
 \AtBeginShipoutBox=\box58
 
 (/usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/pdflscape.sty
@@ -843,7 +906,7 @@ LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
 LaTeX Warning: Reference `' on page 15 undefined on input line 4.
 
 [15]) [16] (./case.tex
-<figurer/variogram_covariancefunctions.png, id=98, 655.44875pt x 506.89375pt>
+<figurer/variogram_covariancefunctions.png, id=99, 655.44875pt x 506.89375pt>
 File: figurer/variogram_covariancefunctions.png Graphic file (type png)
 
 <use figurer/variogram_covariancefunctions.png>
@@ -855,7 +918,7 @@ Overfull \hbox (81.94212pt too wide) in paragraph at lines 16--17
 [][] 
  []
 
-<figurer/original_reduced.png, id=99, 605.26125pt x 506.89375pt>
+<figurer/original_reduced.png, id=100, 605.26125pt x 506.89375pt>
 File: figurer/original_reduced.png Graphic file (type png)
 
 <use figurer/original_reduced.png>
@@ -866,14 +929,14 @@ Overfull \hbox (81.94212pt too wide) in paragraph at lines 21--23
 [][]
  []
 
-<figurer/fitted_exponential.png, id=100, 501.875pt x 401.5pt>
+<figurer/fitted_exponential.png, id=101, 501.875pt x 401.5pt>
 File: figurer/fitted_exponential.png Graphic file (type png)
 
 <use figurer/fitted_exponential.png>
 Package pdftex.def Info: figurer/fitted_exponential.png used on input line 29.
 (pdftex.def)             Requested size: 227.62206pt x 182.10077pt.
 
-<figurer/fitted_gamma.png, id=101, 501.875pt x 401.5pt>
+<figurer/fitted_gamma.png, id=102, 501.875pt x 401.5pt>
 File: figurer/fitted_gamma.png Graphic file (type png)
 
 <use figurer/fitted_gamma.png>
@@ -885,46 +948,88 @@ Underfull \hbox (badness 10000) in paragraph at lines 58--60
 
  []
 
-[19]
-
-LaTeX Warning: Reference `' on page 20 undefined on input line 100.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 100--102
-
- []
-
-[20]
-Overfull \hbox (51.29665pt too wide) in paragraph at lines 103--117
-[]  [] 
- []
-
-<figurer/design_lines.png, id=119, 1014.79124pt x 501.875pt>
+[19] <figurer/design_lines.png, id=117, 1014.79124pt x 501.875pt>
 File: figurer/design_lines.png Graphic file (type png)
 
 <use figurer/design_lines.png>
-Package pdftex.def Info: figurer/design_lines.png used on input line 120.
-(pdftex.def)             Requested size: 569.05513pt x 281.43863pt.
+Package pdftex.def Info: figurer/design_lines.png used on input line 102.
+(pdftex.def)             Requested size: 591.81873pt x 292.69588pt.
 
-Overfull \hbox (61.23264pt too wide) in paragraph at lines 119--121
+Overfull \hbox (73.99623pt too wide) in paragraph at lines 101--103
 []  [] 
  []
 
-) [21] (./conclusion.tex)
-Underfull \hbox (badness 10000) in paragraph at lines 3--56
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[20]
+
+LaTeX Warning: Reference `' on page 21 undefined on input line 109.
+
+[21 <./figurer/design_lines.png>]
+<figurer/final61.png, id=125, 767.86874pt x 858.20625pt>
+File: figurer/final61.png Graphic file (type png)
+
+<use figurer/final61.png>
+Package pdftex.def Info: figurer/final61.png used on input line 114.
+(pdftex.def)             Requested size: 273.14923pt x 305.28737pt.
+ <figurer/final85.png, id=126, 762.85pt x 851.18pt>
+File: figurer/final85.png Graphic file (type png)
+
+<use figurer/final85.png>
+Package pdftex.def Info: figurer/final85.png used on input line 121.
+(pdftex.def)             Requested size: 273.14923pt x 304.77509pt.
+ [22 <./figurer/final61.png> <./figurer/final85.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 134--136
 
  []
 
-[22] [23] [24 <./figurer/design_lines.png>] (./prosjektoppgave_bachelor.aux)
+
+Overfull \hbox (44.89659pt too wide) in paragraph at lines 139--152
+[]  [] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--154
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 137--154
+
+ []
+
+
+Overfull \hbox (44.89659pt too wide) in paragraph at lines 159--171
+[]  [] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--174
+
+ []
+
+[23]
+
+LaTeX Warning: Reference `fig' on page 24 undefined on input line 181.
+
+
+LaTeX Warning: Reference `fig' on page 24 undefined on input line 181.
+
+[24]) [25] (./conclusion.tex
+
+LaTeX Warning: Reference `' on page 26 undefined on input line 4.
+
+) [26] [27] (./prosjektoppgave_bachelor.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 6511 strings out of 493014
- 96360 string characters out of 6133352
- 195595 words of memory out of 5000000
- 9883 multiletter control sequences out of 15000+600000
+ 6748 strings out of 493014
+ 100123 string characters out of 6133352
+ 199053 words of memory out of 5000000
+ 10102 multiletter control sequences out of 15000+600000
  21199 words of font info for 52 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  42i,19n,40p,1251b,336s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -940,23 +1045,24 @@ al/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local
 xlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texli
 ve/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2
-016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/201
-6/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/
-texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2016/te
-xmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2016/texm
-f-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2016/texmf-
-dist/fonts/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2016/texmf-di
-st/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2016/texmf-dist
-/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2016/texmf-dist/f
-onts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2016/texmf-dist/fon
-ts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2016/texmf-dist/fonts
-/type1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
-ype1/public/cm-super/sfrm2488.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
-e1/public/cm-super/sfti1095.pfb>
-Output written on prosjektoppgave_bachelor.pdf (26 pages, 701295 bytes).
+016/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/local/texlive/201
+6/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2016/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2016/te
+xmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/2016/texm
+f-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2016/texmf-
+dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/local/texlive/2016/texmf-di
+st/fonts/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2016/texmf-dist
+/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2016/texmf-dist/f
+onts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2016/texmf-dist/fon
+ts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2016/texmf-dist/fonts
+/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
+ype1/public/cm-super/sfrm1728.pfb></usr/local/texlive/2016/texmf-dist/fonts/typ
+e1/public/cm-super/sfrm2488.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1
+/public/cm-super/sfti1095.pfb>
+Output written on prosjektoppgave_bachelor.pdf (29 pages, 947053 bytes).
 PDF statistics:
- 211 PDF objects out of 1000 (max. 8388607)
- 133 compressed objects within 2 object streams
+ 228 PDF objects out of 1000 (max. 8388607)
+ 142 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 

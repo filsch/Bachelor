@@ -28,4 +28,13 @@ where $Z_a$ denotes the proposed design, $Z$ current data that has been acquired
 
 \subsection{Constructing designs in Bayesian hierarchical models}
 
-med usikkerhet så må man midle over parameterene for begge fordelingene, både varians. -> pseudokode
+With a Bayesian hierarchical model, one has to make some alterations to the calculation. In our setting, with prior distributions for $\sigma^2$ and $\tau$, we need to evaluate the integral that arises from 
+\begin{equation*}
+P(Z_a | Z) = \int \int P(Z_a | Z, \sigma^2, \tau) d\sigma^2 d\tau
+\end{equation*}
+In stead of evaluating this double-integral, Monte Carlo sampling of $P(Z_a | Z)$ is used to estimate $I$. To generate a sample $Z_a$, a realization of both $\sigma^2$ and $\tau$ is drawn from their respective distributions.
+With these, a sample $Z_a^*$ is drawn from $P(Z_a | Z, \sigma^2, \tau)$, and evaluating the criteria as 
+\begin{equation*}
+I = \sum_{Z_a^*} \sum_{i=1}^n \sqrt{ Var (Y_i | Z_a^*, Z) }.
+\end{equation*}
+Performing this Monte Carlo sampling an adequate amount of times, we obtain a result for our criteria. 
